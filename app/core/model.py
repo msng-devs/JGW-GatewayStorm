@@ -1,9 +1,7 @@
-from datetime import datetime
-from ..configs.db import Base
-from sqlalchemy import Table, Column, VARCHAR, BIGINT, INT, BLOB, DATETIME, ForeignKey, TEXT, Enum,ForeignKey
-from sqlalchemy.orm import relationship, backref
-from ..utlis.repr import repr_create
-import enum
+from app.core.db import Base
+from sqlalchemy import Column, VARCHAR, INT, BLOB, TEXT, ForeignKey
+from sqlalchemy.orm import relationship
+from app.utlis.repr import repr_create
 
 
 class Method(Base):

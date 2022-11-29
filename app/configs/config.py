@@ -1,6 +1,6 @@
 import sys
 
-import secret
+import app.configs.secret as secret
 from pydantic import BaseSettings
 
 class Config(BaseSettings):
@@ -8,7 +8,7 @@ class Config(BaseSettings):
 
 
 class LocalConfig(Config):
-
+    CONFIG_NM = "local"
     DB_HOST = secret.DB_HOST
     DB_USER_NM = secret.DB_USER_NM
     DB_USER_PW = secret.DB_USER_PW
@@ -16,6 +16,7 @@ class LocalConfig(Config):
 
 class TestConfig(Config):
 
+    CONFIG_NM = "test"
     DB_HOST = secret.DB_HOST
     DB_USER_NM = secret.DB_USER_NM
     DB_USER_PW = secret.DB_USER_PW
@@ -23,6 +24,7 @@ class TestConfig(Config):
 
 class ProductionConfig(Config):
 
+    CONFIG_NM = "product"
     DB_HOST = secret.DB_HOST
     DB_USER_NM = secret.DB_USER_NM
     DB_USER_PW = secret.DB_USER_PW
