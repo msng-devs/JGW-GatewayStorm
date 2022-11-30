@@ -1,10 +1,9 @@
 from typing import Any
 
-from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
+from app.core.model import Service
 from app.utlis.logger import logger
 from app.utlis.exceptions import NotFoundItemError
-from app.core.model import Service
 
 
 def findAll(db: Session) -> Any | None:
@@ -20,7 +19,8 @@ def findAll(db: Session) -> Any | None:
 
     return services
 
-def add(db: Session,new_service : Service):
+
+def add(db: Session, new_service: Service):
     try:
         db.add(new_service)
 
@@ -30,7 +30,8 @@ def add(db: Session,new_service : Service):
 
     db.commit()
 
-def update(db: Session,target_id:int,new_service : Service):
+
+def update(db: Session, target_id: int, new_service: Service):
     try:
         target_service = db.query(Service).filter(Service.SERVICE_PK == target_id).one()
         assert target_service is not None
@@ -45,6 +46,7 @@ def update(db: Session,target_id:int,new_service : Service):
         return None
 
     db.commit()
+
 
 def delete(db: Session, target_id: int):
     try:

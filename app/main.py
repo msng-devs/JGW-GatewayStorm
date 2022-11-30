@@ -1,13 +1,15 @@
 import uvicorn
 from fastapi import FastAPI
-from app.configs.config import FactorySettings
-from app.view.view import view_route
+from starlette.staticfiles import StaticFiles
+
+from app.view.route import view_route
+from app.api.route import api_route
 
 app = FastAPI()
+app.include_router(api_route)
 app.include_router(view_route)
-Setting = FactorySettings.load()
+app.mount("/static", StaticFiles(directory="./resources/static"), name="static")
 
 if __name__ == '__main__':
-    Setting = FactorySettings.load()
     uvicorn.run(app)
 

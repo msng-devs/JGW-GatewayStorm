@@ -39,17 +39,18 @@
                               <th scope="col">서비스 명</th>
                               <th scope="col">서비스 설명</th>
                               <th scope="col">도메인</th>
-                              <th scope="col">등록된 path</th>
-                              <th scope="col"></th>
+                              <th scope="col">수정</th>
+                              <th scope="col">path 관리</th>
                             </tr>
                           </thead>
                           <tbody>
                             {% for x in services %}
-                            <tr id="{{x.name}}">
+                            <tr id="{{x.id}}">
                               <th scope="row">{{x.name}}</th>
                               <td>{{x.index}}</td>
                               <td>{{x.domain}}</td>
-                              <td><a href="/path/{{x.name}}" class="icon-block"><i class="fa-sharp fa-solid fa-gear" onclick=""></i></a></td>
+                              <td><a class="icon-block"><i class="fa-solid fa-pen-to-square" onclick="service_update_modal('{{x.id}}')"></i></a></td>
+                              <td><a href="/path/{{x.id}}" class="icon-block"><i class="fa-sharp fa-solid fa-gear"></i></a></td>
                             </tr>
                             {% endfor %}
                           </tbody>
@@ -88,7 +89,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" id="btn-service-add">등록</button>
+                    <button type="button" class="btn btn-outline-success" id="btn-service-add">등록</button>
                 </div>
             </div>
         </div>
@@ -114,20 +115,40 @@
 
                             <label class="my-3" for="update-service-domain">도메인</label>
                             <input class="form-control" id="update-service-domain">
+                            <a id="update-service-id" style="display: none"></a>
                         </div>
                         <hr class="my-3">
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" id="btn-service-update">등록</button>
-                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" id="btn-service-rm">삭제</button>
+                    <button type="button" class="btn btn-outline-success" id="btn-service-update">등록</button>
+                    <button type="button" class="btn btn-outline-danger" id="btn-service-check-rm">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--    delete service -->
+    <div class="modal fade" id="delete-service" tabindex="-1" aria-labelledby="ModalFormLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">정말로 삭제 하시겠습니까?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                </div>
+                <div class="modal-body">
+                    <a id="rm-service-index">삭제후 복구가 불가능합니다!</a>
+                    <a id="rm-service-id" style="display: none"></a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-outline-danger" id="btn-service-rm">삭제</button>
                 </div>
             </div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src ="../static/js/gateway-storm-main.js"></script>
+    <script src =" {{ url_for('static', path='/js/gateway-storm-main.js')}}"></script>
 </body>
 </html>

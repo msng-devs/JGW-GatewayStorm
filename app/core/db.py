@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from app.main import Setting
+from app.configs.config import settings
 
-DB_CONN_URL = f"mysql+pymysql://{Setting.DB_USER_NM}:{Setting.DB_USER_PW}@{Setting.DB_HOST}/{Setting.DB_NAME}"
+DB_CONN_URL = f"mysql+pymysql://{settings.DB_USER_NM}:{settings.DB_USER_PW}@{settings.DB_HOST}/{settings.DB_NAME}"
 
 Base = declarative_base()
 db_engine = create_engine(DB_CONN_URL)

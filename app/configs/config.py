@@ -1,43 +1,35 @@
-import sys
-
 import app.configs.secret as secret
 from pydantic import BaseSettings
+from functools import lru_cache
 
-class Config(BaseSettings):
-    APP_NAME = 'GatewayStorm'
+class Settings(BaseSettings):
+    PROFILE = str = 'local'
+
+    if PROFILE == 'local':
+        APP_NAME = 'GatewayStorm'
+        CONFIG_NM = "local"
+        DB_HOST = secret.DB_HOST
+        DB_USER_NM = secret.DB_USER_NM
+        DB_USER_PW = secret.DB_USER_PW
+        DB_NAME = secret.DB_NAME
+
+    elif PROFILE == 'test':
+        CONFIG_NM = "test"
+        DB_HOST = secret.DB_HOST
+        DB_USER_NM = secret.DB_USER_NM
+        DB_USER_PW = secret.DB_USER_PW
+        DB_NAME = secret.DB_NAME
+
+    elif PROFILE == 'product':
+        CONFIG_NM = "product"
+        DB_HOST = secret.DB_HOST
+        DB_USER_NM = secret.DB_USER_NM
+        DB_USER_PW = secret.DB_USER_PW
+        DB_NAME = secret.DB_NAME
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()
 
 
-class LocalConfig(Config):
-    CONFIG_NM = "local"
-    DB_HOST = secret.DB_HOST
-    DB_USER_NM = secret.DB_USER_NM
-    DB_USER_PW = secret.DB_USER_PW
-    DB_NAME = secret.DB_NAME
-
-class TestConfig(Config):
-
-    CONFIG_NM = "test"
-    DB_HOST = secret.DB_HOST
-    DB_USER_NM = secret.DB_USER_NM
-    DB_USER_PW = secret.DB_USER_PW
-    DB_NAME = secret.DB_NAME
-
-class ProductionConfig(Config):
-
-    CONFIG_NM = "product"
-    DB_HOST = secret.DB_HOST
-    DB_USER_NM = secret.DB_USER_NM
-    DB_USER_PW = secret.DB_USER_PW
-    DB_NAME = secret.DB_NAME
-
-class FactorySettings:
-    @staticmethod
-    def load():
-        env_state = sys.argv[1]
-        if env_state == 'local':
-            return LocalConfig()
-        elif env_state == 'product':
-            return ProductionConfig()
-        elif env_state == 'test':
-            return TestConfig()
-
+settings = get_settings()

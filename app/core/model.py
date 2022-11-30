@@ -14,6 +14,8 @@ class Method(Base):
     def __repr__(self):
         return repr_create("Method", ["METHOD_PK", "METHOD_NM"]).format(self=self)
 
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
 
 class Role(Base):
     __tablename__ = 'ROLE'
@@ -25,12 +27,14 @@ class Role(Base):
     def __repr__(self):
         return repr_create("Role", ["ROLE_PK", "ROLE_NM"]).format(self=self)
 
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
 
 class Service(Base):
     __tablename__ = 'SERVICE'
     __table_args__ = {'extend_existing': True}
 
-    SERVICE_PK = Column(INT(), primary_key=True)
+    SERVICE_PK = Column(INT(), primary_key=True, autoincrement=True)
     SERVICE_NM = Column(VARCHAR(45), nullable=False, unique=True)
     SERVICE_DOMAIN = Column(VARCHAR(45), nullable=False, unique=True)
     SERVICE_INDEX = Column(TEXT(), nullable=True)
@@ -38,12 +42,14 @@ class Service(Base):
     def __repr__(self):
         return repr_create("Service", ["SERVICE_PK", "SERVICE_NM", "SERVICE_DOMAIN", "SERVICE_INDEX"]).format(self=self)
 
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
 
 class Path(Base):
     __tablename__ = 'API_ROUTE'
     __table_args__ = {'extend_existing': True}
 
-    API_ROUTE_PK = Column(INT(), primary_key=True)
+    API_ROUTE_PK = Column(INT(), primary_key=True, autoincrement=True)
     API_ROUTE_PATH = Column(VARCHAR(45), nullable=False)
     METHOD_METHOD_PK = Column(INT(),ForeignKey("METHOD.METHOD_PK"),nullable=False)
     ROLE_ROLE_PK = Column(INT(),ForeignKey("ROLE.ROLE_PK"),nullable=False)
@@ -60,3 +66,6 @@ class Path(Base):
 
     def __repr__(self):
         return repr_create("Path", ["API_ROUTE_PK","API_ROUTE_PATH","METHOD_METHOD_PK","ROLE_ROLE_PK","SERVICE_SERVICE_PK","API_ROUTE_GATEWAY_REFRESH","API_ROUTE_ONLY_TOKEN","API_ROUTE_OPTIONAL","API_ROUTE_AUTHORIZATION"]).format(self=self)
+
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
