@@ -13,14 +13,39 @@ var main = {
         $('#btn-service-rm').on('click', function () {
             _this.service_rm();
         });
-        $('#edit-category-id').on('change', function () {
-            _this.category_index_change();
+        $('#btn-path-update').on('click', function () {
+            _this.path_update();
         });
-        $('#btn-category-edit').on('click', function () {
-            _this.category_edit();
+        $('#btn-path-add').on('click', function () {
+            _this.path_add();
         });
-        $('#btn-category-remove').on('click', function () {
-            _this.category_remove();
+        $('#btn-path-check-rm').on('click', function () {
+            _this.path_rm_check();
+        });
+        $('#btn-path-rm').on('click', function () {
+            _this.path_rm();
+        });
+        $('#btn-login').on('click', function () {
+            _this.get_login();
+        });
+    },
+    get_login : function () {
+        var data = {
+            pw : $("#pw").val(),
+            id : $("#id").val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/api/v1/auth",
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('로그인에 성공했습니다!');
+            window.location.href("/");
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
         });
     },
     service_update : function () {
@@ -38,7 +63,7 @@ var main = {
             data: JSON.stringify(data)
         }).done(function() {
             alert('서비스 정보가 업데이트 되었습니다!');
-            window.location.href = '/';
+            location.reload();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -58,48 +83,7 @@ var main = {
             data: JSON.stringify(data)
         }).done(function() {
             alert('성공적으로 서비스가 추가되었습니다.');
-            window.location.href = '/';
-        }).fail(function (error) {
-            alert(JSON.stringify(error));
-        });
-    },
-
-    path_add : function () {
-        var data = {
-            category_id: $('#category').val(),
-            content: simplemde.value(),
-            title: $('#title').val()
-        };
-
-        $.ajax({
-            type: 'POST',
-            url: "/api/v1/posts",
-            dataType: 'json',
-            contentType:'application/json; charset=utf-8',
-            data: JSON.stringify(data)
-        }).done(function() {
-            alert('글이 등록되었습니다.');
-            window.location.href = '/posts/';
-        }).fail(function (error) {
-            alert(JSON.stringify(error));
-        });
-    },
-    path_update : function () {
-        var data = {
-            service_name : $("#update-service-name").val(),
-            service_index : $("#update-service-index").val(),
-            service_domain : $("#update-service-domain").val(),
-        };
-
-        $.ajax({
-            type: 'POST',
-            url: "/api/v1/posts",
-            dataType: 'json',
-            contentType:'application/json; charset=utf-8',
-            data: JSON.stringify(data)
-        }).done(function() {
-            alert('글이 등록되었습니다.');
-            window.location.href = '/posts/';
+            location.reload();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -120,38 +104,80 @@ var main = {
             contentType:'application/json; charset=utf-8'
         }).done(function() {
             alert('성공적으로 삭제되었습니다.');
-            window.location.href = '/';
+            location.reload();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
-    path_rm : function () {
+    path_update : function () {
         var data = {
-            category_id: $('#category').val(),
-            content: simplemde.value(),
-            title: $('#title').val()
+            path : $("#update-path-path").val(),
+            method_id : parseInt($("#update-path-method").find(":selected").val()),
+            role_id :  parseInt($("#update-path-role").find(":selected").val()),
+            option : $("#update-path-option").find(":selected").val()
         };
 
         $.ajax({
-            type: 'POST',
-            url: "/api/v1/posts",
+            type: 'PUT',
+            url: "/api/v1/path/" + $("#update-path-id").text(),
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function() {
-            alert('글이 등록되었습니다.');
-            window.location.href = '/posts/';
+            alert('Path 정보가 업데이트 되었습니다!');
+            location.reload();
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    path_add : function () {
+        var data = {
+            path : $("#add-path-path").val(),
+            method_id : parseInt($("#add-path-method").find(":selected").val()),
+            role_id : parseInt($("#add-path-role").find(":selected").val()),
+            service_id: parseInt($("#service-id").text()),
+            option : $("#add-path-option").find(":selected").val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/api/v1/path/",
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('성공적으로 Path가 추가되었습니다.');
+            location.reload();
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    path_rm_check: function (){
+        $('#update-path').modal('hide');
+        $('#delete-path').modal('show');
+        $("#rm-path-id").text($("#update-path-id").text());
+
+        },
+    path_rm : function () {
+
+        $.ajax({
+            type: 'DELETE',
+            url: "/api/v1/path/" + $("#rm-path-id").text(),
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8'
+        }).done(function() {
+            alert('성공적으로 삭제되었습니다.');
+            location.reload();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     }
-
 };
 
 main.init();
 
-    jQuery('#add-path-option').change(function() {
-	var state = jQuery('#option').val();
+jQuery('#add-path-option').change(function() {
+	var state = jQuery('#add-path-option').val();
 	if ( state === 'RBAC' ) {
 		jQuery('#add-path-role').show();
         jQuery('#add-path-role-label').show();
@@ -160,6 +186,7 @@ main.init();
         jQuery('#add-path-role-label').hide();
 	}
     });
+
 function service_update_modal(tr_id){
 
     var td = $('#'+tr_id).closest('tr').children();
@@ -173,5 +200,27 @@ function service_update_modal(tr_id){
     $("#update-service-name").val(service_name)
     $("#update-service-index").val(service_index)
     $("#update-service-domain").val(service_domain)
+
+}
+
+function path_update_modal(tr_id){
+    var td = $('#'+tr_id).closest('tr').children();
+
+    var method_name = td.eq(0).text()
+    var path = td.eq(1).text()
+    var option_name = td.eq(2).text()
+    var role_name = td.eq(3).text()
+    console.log(method_name,path,option_name,role_name)
+    $('#update-path').modal('show');
+    $('#update-path-id').text(tr_id)
+    $('#update-path-method option:contains('+ method_name +')').attr('selected', true);
+    $("#update-path-path").val(path)
+    $('#update-path-option option:contains('+ option_name +')').attr('selected', true);
+    if (option_name === "RBAC"){
+        $('#update-path-role option:contains('+ role_name +')').attr('selected', true);
+        $("#update-path-role").show()
+        $("#update-path-role-label").show()
+    }
+
 
 }

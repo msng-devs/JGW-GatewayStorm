@@ -3,17 +3,18 @@ from fastapi import APIRouter, Depends
 from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
-from app.curd.service import findAll
+from app.auth.auth import manager
+from app.crud.service import findServiceAll
 from app.core.db import get_db
 
-service_view_route = APIRouter()
+service_view_route = APIRouter(tags=["view"])
 
 templates = Jinja2Templates(directory="./resources/templates/")
 
 
 @service_view_route.get("/", response_class=HTMLResponse)
-async def services(request: Request, db=Depends(get_db)):
-    list_service = findAll(db)
+async def services(request: Request, db=Depends(get_db) ,user=Depends(manager)):
+    list_service = findServiceAll(db)
 
     list_response = []
 

@@ -2,11 +2,10 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 from app.core.model import Service
-from app.utlis.logger import logger
 from app.utlis.exceptions import NotFoundItemError
 
 
-def findAll(db: Session) -> Any | None:
+def findServiceAll(db: Session) -> Any | None:
     try:
         services = db.query(Service).all()
         assert services is not None
@@ -14,24 +13,34 @@ def findAll(db: Session) -> Any | None:
         raise NotFoundItemError()
 
     except Exception as e:
-        logger.error(e.__traceback__)
         return None
 
     return services
 
 
-def add(db: Session, new_service: Service):
+def serviceAdd(db: Session, new_service: Service):
     try:
         db.add(new_service)
 
     except Exception as e:
-        logger.error(e.__traceback__)
         return None
 
     db.commit()
 
+def findById(db: Session, target_id: int):
+    try:
+        target_service = db.query(Service).filter(Service.SERVICE_PK == target_id).one()
+        assert target_service is not None
 
-def update(db: Session, target_id: int, new_service: Service):
+    except AssertionError:
+        raise NotFoundItemError()
+    except Exception as e:
+
+        return None
+
+    return target_service
+
+def serviceUpdate(db: Session, target_id: int, new_service: Service):
     try:
         target_service = db.query(Service).filter(Service.SERVICE_PK == target_id).one()
         assert target_service is not None
@@ -42,18 +51,18 @@ def update(db: Session, target_id: int, new_service: Service):
     except AssertionError:
         raise NotFoundItemError()
     except Exception as e:
-        logger.error(e.__traceback__)
+
         return None
 
     db.commit()
 
 
-def delete(db: Session, target_id: int):
+def serviceDelete(db: Session, target_id: int):
     try:
         db.query(Service).filter(Service.SERVICE_PK == target_id).delete()
 
     except Exception as e:
-        logger.error(e.__traceback__)
+
         return None
 
     db.commit()
