@@ -1,6 +1,5 @@
 import bcrypt
-from fastapi import APIRouter
-from starlette.responses import Response
+from fastapi import APIRouter,Response
 
 from app.auth.auth import load_user, manager
 from app.schemas.auth import LoginReqeust
@@ -25,5 +24,11 @@ async def login(response: Response, req: LoginReqeust):
     token = manager.create_access_token(
         data=dict(sub=id), expires=timedelta(hours=24)
     )
-    response.set_cookie(key="gateway-storm-auth-cookie", value=token, httponly=True)
-    return response
+    manager.set_cookie(response,token)
+    return {"message": "ok"}
+
+@auth_route.delete("")
+async def logout(response: Response):
+    response.delete_cookie(key="access_token",httponly=True)
+    response.delete_cookie(key="access-token", httponly=True)
+    return {"message": "ok"}

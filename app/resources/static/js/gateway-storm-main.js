@@ -28,6 +28,10 @@ var main = {
         $('#btn-login').on('click', function () {
             _this.get_login();
         });
+        $('#btn-logout').on('click', function () {
+            _this.get_logout();
+        });
+
     },
     get_login : function () {
         var data = {
@@ -37,13 +41,32 @@ var main = {
 
         $.ajax({
             type: 'POST',
+            beforeSend: function(xhr){
+                xhr.withCredentials = true;
+            },
             url: "/api/v1/auth",
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function() {
             alert('로그인에 성공했습니다!');
-            window.location.href("/");
+            location.replace("/");
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    get_logout : function () {
+        $.ajax({
+            type: 'DELETE',
+            beforeSend: function(xhr){
+                xhr.withCredentials = true;
+            },
+            url: "/api/v1/auth",
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8'
+        }).done(function() {
+            alert('로그아웃했습니다.');
+            location.replace("/login");
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

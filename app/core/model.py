@@ -41,7 +41,7 @@ class Service(Base):
         return repr_create("Service", ["SERVICE_PK", "SERVICE_NM", "SERVICE_DOMAIN", "SERVICE_INDEX"]).format(self=self)
 
     def __init__(self, **entries):
-        self.__dict__.serviceUpdate(entries)
+        self.__dict__.update(entries)
 
 class Path(Base):
     __tablename__ = 'API_ROUTE'
