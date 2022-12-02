@@ -6,4 +6,5 @@ COPY ./app /code/app
 WORKDIR /code/app
 EXPOSE 50010
 ENV PYTHONPATH "${PYTHONPATH}:/code/app"
+RUN echo $PYTHONPATH
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "50010"]
