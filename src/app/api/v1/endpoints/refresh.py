@@ -10,7 +10,7 @@ refresh_router = APIRouter(prefix="/gs/api/v1/refresh",tags=["refresh"])
 @refresh_router.get("")
 async def gateway_refresh(request: Request):
 
-    if request.headers.get(user_pk) is None or request.headers.get(role_pk) is None:
+    if request.headers.get('user_pk') is None or request.headers.get('role_pk') is None:
         raise HTTPException(403)
 
     logger.info(f"{user_pk} refresh gateway")
