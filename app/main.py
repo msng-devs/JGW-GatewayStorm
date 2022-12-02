@@ -1,4 +1,5 @@
 import os
+
 print(os.getcwd())
 
 import uvicorn
@@ -31,5 +32,3 @@ app.add_middleware(
 if __name__ == '__main__':
     print(os.getcwd())
     uvicorn.run(app)
-
-
