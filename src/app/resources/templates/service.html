@@ -9,8 +9,9 @@
     <nav class="navbar navbar-light bg-light p-3 m-3">
           <form class="form-inline">
             <button class="btn btn-outline-secondary" type="button" id="btn-logout">logout</button>
-            <button class="btn btn-outline-success" type="button">Refresh Gateway</button>
-            <a id="gateway-path" style="display: none">"{{gatewaypath}}</a>
+            <button class="btn btn-outline-success" type="button" id="btn-refresh">Refresh Gateway</button>
+              <a id="firebase-key" style="display: none">{{firebasekey}}</a>
+            <a id="gateway-path" style="display: none">{{gatewaypath}}</a>
           </form>
     </nav>
 </head>
@@ -151,6 +152,39 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
                     <button type="button" class="btn btn-outline-danger" id="btn-service-rm">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- gateway refresh -->
+    <div class="modal fade" id="gateway-refresh-modal" tabindex="-1" aria-labelledby="ModalFormLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gateway refresh</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <a>경고! 해당 기능을 사용하면, 일시적으로 gateway 서비스가 중단됩니다! (즉 일시적으로 모든 서비스가 중단됩니다.) test 환경이 아니라면, 주의하여 사용하세요.</a>
+
+                    <a>해당 기능을 사용하기 위해서는, ROLE_DEV 등급의 계정이 필요합니다.</a>
+                    <form>
+
+                        <div class="form-group">
+
+                            <label class="my-3" for="gateway-refresh-id">ID</label>
+                            <input class="form-control" id="gateway-refresh-id">
+
+                            <label class="my-3" for="gateway-refresh-pw">PW</label>
+                            <input class="form-control" id="gateway-refresh-pw" type="password">
+
+                        </div>
+                        <hr class="my-3">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" id="btn-gateway-refresh">진행하기</button>
                 </div>
             </div>
         </div>

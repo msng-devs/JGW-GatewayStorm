@@ -1,7 +1,7 @@
 import app.configs.secret as secret
 from pydantic import BaseSettings
 from functools import lru_cache
-import bcrypt
+
 
 class Settings(BaseSettings):
     PROFILE = str = 'product'
@@ -19,7 +19,8 @@ class Settings(BaseSettings):
         #Auth Setup
         AUTH_SECRET_KEY = secret.AUTH_SECRET_KEY
         USER_ID = secret.USER_ID
-        USER_PW = bcrypt.hashpw(password=bytes(secret.USER_PW, 'utf-8'), salt=bcrypt.gensalt())
+
+        USER_PW = secret.USER_PW
 
         GATEWAY_DOMAIN = secret.GATEWAY_DOMAIN
         # firebase api key(admin sdk 아님!)
@@ -35,7 +36,8 @@ class Settings(BaseSettings):
         # Auth Setup
         AUTH_SECRET_KEY = secret.AUTH_SECRET_KEY
         USER_ID = secret.USER_ID
-        USER_PW = bcrypt.hashpw(password=bytes(secret.USER_PW, 'utf-8'), salt=bcrypt.gensalt())
+
+        USER_PW = secret.USER_PW
 
         GATEWAY_DOMAIN = secret.GATEWAY_DOMAIN
         # firebase api key(admin sdk 아님!)
@@ -51,7 +53,8 @@ class Settings(BaseSettings):
         # Auth Setup
         AUTH_SECRET_KEY = secret.AUTH_SECRET_KEY
         USER_ID = secret.USER_ID
-        USER_PW = bcrypt.hashpw(password=bytes(secret.USER_PW, 'utf-8'), salt=bcrypt.gensalt())
+
+        USER_PW = secret.USER_PW
 
         GATEWAY_DOMAIN = secret.GATEWAY_DOMAIN
         # firebase api key(admin sdk 아님!)

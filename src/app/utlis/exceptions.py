@@ -3,6 +3,3 @@ class NotFoundItemError(Exception):
 
 class NotAuthenticatedException(Exception):
     pass
-
-class NotValidUserIdOrPw(Exception):
-    pass

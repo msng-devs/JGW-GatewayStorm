@@ -87,16 +87,16 @@ class Path(Base):
 
     def set_option(self,option:str,role_id : Optional[int]) -> None:
         if option == "NO_AUTH":
-            self.API_ROUTE_ONLY_TOKEN = self.API_ROUTE_OPTIONAL = self.API_ROUTE_AUTHORIZATION = False
+            self.API_ROUTE_ONLY_TOKEN = self.API_ROUTE_OPTIONAL = self.API_ROUTE_AUTHORIZATION = self.API_ROUTE_GATEWAY_REFRESH = False
             self.ROLE_ROLE_PK = None
 
         elif option == "AUTH":
-            self.API_ROUTE_ONLY_TOKEN = self.API_ROUTE_OPTIONAL = False
+            self.API_ROUTE_ONLY_TOKEN = self.API_ROUTE_OPTIONAL = self.API_ROUTE_GATEWAY_REFRESH = False
             self.API_ROUTE_AUTHORIZATION = True
             self.ROLE_ROLE_PK = None
 
         elif option == "ONLY_TOKEN_AUTH":
-            self.API_ROUTE_OPTIONAL = False
+            self.API_ROUTE_OPTIONAL = self.API_ROUTE_GATEWAY_REFRESH = False
             self.API_ROUTE_AUTHORIZATION = self.API_ROUTE_ONLY_TOKEN = True
             self.ROLE_ROLE_PK = None
 
