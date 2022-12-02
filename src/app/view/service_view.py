@@ -32,6 +32,6 @@ async def services(request: Request, db=Depends(get_db) ,user=Depends(manager)):
     return templates.TemplateResponse("service.html",
                                       {"request": request,
                                        "services": list_response,
-                                       "gatewaypath":settings.GATEWAY_DOMAIN+"/api/v1/refresh",
+                                       "gatewaypath":settings.GATEWAY_DOMAIN+"/gs/api/v1/refresh",
                                       "firebasekey":settings.FIREBASE_API_KEY
     })
