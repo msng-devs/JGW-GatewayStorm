@@ -3,14 +3,14 @@ from fastapi import APIRouter, Depends
 from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
-from app.auth.auth import manager
-from app.configs.config import settings
-from app.crud.service import findServiceAll
-from app.core.db import get_db
+from src.app.auth.auth import manager
+from src.app.configs.config import settings
+from src.app.crud.service import findServiceAll
+from src.app.core.db import get_db
 
 service_view_route = APIRouter(tags=["view"])
 
-templates = Jinja2Templates(directory="./resources/templates/")
+templates = Jinja2Templates(directory="app/resources/templates/")
 
 
 @service_view_route.get("/", response_class=HTMLResponse)
