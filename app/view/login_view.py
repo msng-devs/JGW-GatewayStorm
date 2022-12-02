@@ -15,10 +15,3 @@ async def services(request: Request):
 
     return templates.TemplateResponse("login.html", {"request": request})
 
-@login_view_route.get("/logout", response_class=HTMLResponse)
-async def services(request: Request,response:Response):
-
-    response = templates.TemplateResponse("login.html", {"request": request})
-    response.delete_cookie("access-token")
-    response.delete_cookie("bearer")
-    return response

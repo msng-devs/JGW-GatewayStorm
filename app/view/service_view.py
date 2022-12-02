@@ -4,6 +4,7 @@ from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
 from app.auth.auth import manager
+from app.configs.config import settings
 from app.crud.service import findServiceAll
 from app.core.db import get_db
 
@@ -28,4 +29,9 @@ async def services(request: Request, db=Depends(get_db) ,user=Depends(manager)):
             }
         )
 
-    return templates.TemplateResponse("service.html", {"request": request, "services": list_response})
+    return templates.TemplateResponse("service.html",
+                                      {"request": request,
+                                       "services": list_response,
+                                       "gatewaypath":settings.GATEWAY_DOMAIN+"/api/v1/refresh",
+                                      "firebasekey":settings.FIREBASE_API_KEY
+    })

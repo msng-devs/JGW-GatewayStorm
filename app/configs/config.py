@@ -5,9 +5,6 @@ import bcrypt
 
 class Settings(BaseSettings):
     PROFILE = str = 'local'
-    INIT_USER_NM = 'admin'
-    INIT_USER_ID = 'heroes'
-    INIT_USER_PW = 'sigong'
 
     if PROFILE == 'local':
         APP_NAME = 'GatewayStorm'
@@ -21,11 +18,12 @@ class Settings(BaseSettings):
 
         #Auth Setup
         AUTH_SECRET_KEY = secret.AUTH_SECRET_KEY
-        USER_NM = INIT_USER_NM
-        USER_ID = INIT_USER_ID
-        USER_PW = bcrypt.hashpw(password=bytes(INIT_USER_PW, 'utf-8'), salt=bcrypt.gensalt())
+        USER_ID = secret.USER_ID
+        USER_PW = bcrypt.hashpw(password=bytes(secret.USER_PW, 'utf-8'), salt=bcrypt.gensalt())
 
         GATEWAY_DOMAIN = secret.GATEWAY_DOMAIN
+        # firebase api key(admin sdk 아님!)
+        FIREBASE_API_KEY = "AIzaSyDABK25W8JSK0fri173PaHTixd06N_1eUk"
 
     elif PROFILE == 'test':
         CONFIG_NM = "test"
@@ -36,11 +34,12 @@ class Settings(BaseSettings):
 
         # Auth Setup
         AUTH_SECRET_KEY = secret.AUTH_SECRET_KEY
-        USER_NM = INIT_USER_NM
-        USER_ID = INIT_USER_ID
-        USER_PW = bcrypt.hashpw(password=bytes(INIT_USER_PW, 'utf-8'), salt=bcrypt.gensalt())
+        USER_ID = secret.USER_ID
+        USER_PW = bcrypt.hashpw(password=bytes(secret.USER_PW, 'utf-8'), salt=bcrypt.gensalt())
 
         GATEWAY_DOMAIN = secret.GATEWAY_DOMAIN
+        # firebase api key(admin sdk 아님!)
+        FIREBASE_API_KEY = "AIzaSyDABK25W8JSK0fri173PaHTixd06N_1eUk"
 
     elif PROFILE == 'product':
         CONFIG_NM = "product"
@@ -51,11 +50,12 @@ class Settings(BaseSettings):
 
         # Auth Setup
         AUTH_SECRET_KEY = secret.AUTH_SECRET_KEY
-        USER_NM = INIT_USER_NM
-        USER_ID = INIT_USER_ID
-        USER_PW = bcrypt.hashpw(password=bytes(INIT_USER_PW, 'utf-8'), salt=bcrypt.gensalt())
+        USER_ID = secret.USER_ID
+        USER_PW = bcrypt.hashpw(password=bytes(secret.USER_PW, 'utf-8'), salt=bcrypt.gensalt())
 
         GATEWAY_DOMAIN = secret.GATEWAY_DOMAIN
+        # firebase api key(admin sdk 아님!)
+        FIREBASE_API_KEY = "AIzaSyDABK25W8JSK0fri173PaHTixd06N_1eUk"
 
 @lru_cache
 def get_settings() -> Settings:

@@ -31,8 +31,40 @@ var main = {
         $('#btn-logout').on('click', function () {
             _this.get_logout();
         });
+        $('#btn-refresh').on('click', function () {
+            _this.gateway_refresh();
+        });
+        $('#btn-gateway-refresh').on('click', function () {
+            _this.firebase_login();
+        });
 
     },
+    gateway_refresh : function (){
+        $('#gateway-refresh-modal').modal('show');
+    },
+
+    firebase_login : function () {
+        var data = {
+            email : $("#gateway-refresh-id").val(),
+            password : $("#gateway-refresh-pw").val(),
+            returnSecureToken: true
+        };
+        $.ajax({
+            type: 'POST',
+            url: "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="+$("#firebase-key").text(),
+            contentType:'application/json',
+            data: JSON.stringify(data)
+        }).done(function(data) {
+
+            var token = data.idToken
+            console.log(token)
+            start_refresh(token)
+        }).fail(function (error) {
+            console.log(error)
+            alert("email이나 비밀번호가 잘못되었습니다.");
+        });
+    },
+
     get_login : function () {
         var data = {
             pw : $("#pw").val(),
@@ -244,6 +276,19 @@ function path_update_modal(tr_id){
         $("#update-path-role").show()
         $("#update-path-role-label").show()
     }
-
-
+}
+function start_refresh(token){
+        $.ajax({
+            type: 'POST',
+            url: $("gateway-path").text(),
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization","bearer " + token);
+            }
+        }).done(function(data) {
+            alert("성공적으로 refresh 되었습니다!");
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
 }

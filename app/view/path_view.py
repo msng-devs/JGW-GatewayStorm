@@ -4,6 +4,7 @@ from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
 from app.auth.auth import manager
+from app.configs.config import settings
 from app.crud.role import findRoleAll
 from app.crud.method import findMethodAll
 from app.crud.path import findPathAllByServiceID,findOptionAll
@@ -43,5 +44,7 @@ async def paths(service_id:int ,request: Request, db=Depends(get_db),user=Depend
         "options":list_response_options,
         "paths":list_response_path,
         "roles":list_response_roles,
-        "methods":list_response_methods
+        "methods":list_response_methods,
+        "gatewaypath":settings.GATEWAY_DOMAIN + "/api/v1/refresh",
+        "firebasekey":settings.FIREBASE_API_KEY
     })
