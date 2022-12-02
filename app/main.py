@@ -1,3 +1,6 @@
+import os
+print(os.getcwd())
+
 import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
@@ -26,5 +29,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 if __name__ == '__main__':
+    print(os.getcwd())
     uvicorn.run(app)
+
 
