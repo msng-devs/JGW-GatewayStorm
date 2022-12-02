@@ -13,7 +13,7 @@ async def gateway_refresh(request: Request):
     if request.headers.get('user_pk') is None or request.headers.get('role_pk') is None:
         raise HTTPException(403)
 
-    logger.info(f"{user_pk} refresh gateway")
+    logger.info(f"{request.headers.get('user_pk')} refresh gateway")
 
     return {"message":"ok"}
 
