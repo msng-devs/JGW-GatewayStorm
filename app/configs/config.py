@@ -4,7 +4,7 @@ from functools import lru_cache
 import bcrypt
 
 class Settings(BaseSettings):
-    PROFILE = str = 'local'
+    PROFILE = str = 'product'
 
     if PROFILE == 'local':
         APP_NAME = 'GatewayStorm'
