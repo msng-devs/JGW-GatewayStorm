@@ -1,10 +1,10 @@
 import bcrypt
 from fastapi import APIRouter,Response
 
-from src.app.auth.auth import load_user, manager
-from src.app.schemas.auth import LoginReqeust
+from app.auth.auth import load_user, manager
+from app.schemas.auth import LoginReqeust
 from datetime import timedelta
-from src.app.utlis.exceptions import NotValidUserIdOrPw
+from app.utlis.exceptions import NotValidUserIdOrPw
 
 auth_route = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 

@@ -1,8 +1,8 @@
 from typing import Any
 
 from sqlalchemy.orm import Session
-from src.app.core.model import Method
-from src.app.utlis.exceptions import NotFoundItemError
+from app.core.model import Method
+from app.utlis.exceptions import NotFoundItemError
 
 
 def findMethodAll(db: Session) -> Any | None:

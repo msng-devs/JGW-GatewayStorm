@@ -1,8 +1,8 @@
 from typing import Any
 
 from sqlalchemy.orm import Session
-from src.app.core.model import Service
-from src.app.utlis.exceptions import NotFoundItemError
+from app.core.model import Service
+from app.utlis.exceptions import NotFoundItemError
 
 
 def findServiceAll(db: Session) -> Any | None:

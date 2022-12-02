@@ -2,8 +2,8 @@ from typing import Union
 
 from fastapi import APIRouter, Header, HTTPException, Request
 
-from src.app.configs.config import settings
-from src.app.utlis.logger import logger
+from app.configs.config import settings
+from app.utlis.logger import logger
 
 refresh_router = APIRouter(prefix="/api/v1/refresh",tags=["refresh"])
 

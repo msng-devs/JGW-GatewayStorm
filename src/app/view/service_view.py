@@ -3,10 +3,10 @@ from fastapi import APIRouter, Depends
 from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
-from src.app.auth.auth import manager
-from src.app.configs.config import settings
-from src.app.crud.service import findServiceAll
-from src.app.core.db import get_db
+from app.auth.auth import manager
+from app.configs.config import settings
+from app.crud.service import findServiceAll
+from app.core.db import get_db
 
 service_view_route = APIRouter(tags=["view"])
 
