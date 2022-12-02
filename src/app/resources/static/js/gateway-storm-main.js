@@ -279,9 +279,9 @@ function path_update_modal(tr_id){
 }
 function start_refresh(token){
         $.ajax({
-            type: 'POST',
-            url: $("gateway-path").text(),
-            dataType: 'json',
+            type: 'GET',
+            url: $("#gateway-path").text(),
+            dataType: 'jsonp',
             contentType:'application/json; charset=utf-8',
             beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization","bearer " + token);
