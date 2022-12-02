@@ -1,8 +1,8 @@
 from typing import Any, List
 
 from sqlalchemy.orm import Session
-from app.core.model import Path
-from app.utlis.exceptions import NotFoundItemError
+from src.app.core.model import Path
+from src.app.utlis.exceptions import NotFoundItemError
 
 
 def findPathAllByServiceID(db: Session, service_id: int) -> Any | None:

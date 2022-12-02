@@ -1,5 +1,5 @@
 import logging
-from app.configs.config import settings
+from src.app.configs.config import settings
 
 
 FORMAT = '%(asctime)s %(clientip)-15s %(user)-8s %(message)s'

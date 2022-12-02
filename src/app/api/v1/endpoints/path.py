@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 
-from app.auth.auth import manager
-from app.core.db import get_db
-from app.crud.path import pathAdd, pathUpdate, pathDelete
-from app.core.model import Path
-from app.schemas.path import PathAddRequest,PathUpdateRequest
+from src.app.auth.auth import manager
+from src.app.core.db import get_db
+from src.app.crud.path import pathAdd, pathUpdate, pathDelete
+from src.app.core.model import Path
+from src.app.schemas.path import PathAddRequest,PathUpdateRequest
 
 
 path_route = APIRouter(prefix="/api/v1/path", tags=["path"])

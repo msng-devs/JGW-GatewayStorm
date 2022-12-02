@@ -1,9 +1,9 @@
 from typing import Any
 
 from sqlalchemy.orm import Session
-from app.core.model import Role
+from src.app.core.model import Role
 
-from app.utlis.exceptions import NotFoundItemError
+from src.app.utlis.exceptions import NotFoundItemError
 
 
 def findRoleAll(db: Session) -> Any | None:

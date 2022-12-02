@@ -7,7 +7,7 @@ from starlette.templating import Jinja2Templates
 
 login_view_route = APIRouter(tags=["view"])
 
-templates = Jinja2Templates(directory="./resources/templates/")
+templates = Jinja2Templates(directory="app/resources/templates/")
 
 
 @login_view_route.get("/login", response_class=HTMLResponse)
