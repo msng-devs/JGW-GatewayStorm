@@ -14,9 +14,7 @@ app.include_router(view_route)
 app.mount("/static", StaticFiles(directory="app/resources/static"), name="static")
 apply_exception_handlers(app)
 
-origins = [
-    "*"
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,6 +22,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
 
 print(f"welcome! init ID: {settings.USER_ID} init PW: {settings.USER_PW}")
