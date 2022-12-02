@@ -1,7 +1,4 @@
-import os
-
-print(os.getcwd())
-
+from app.configs.config import settings
 import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
@@ -29,6 +26,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+print(f"welcome! init ID: {settings.USER_ID} init PW: {settings.USER_PW}")
 if __name__ == '__main__':
-    print(os.getcwd())
+
     uvicorn.run(app)
