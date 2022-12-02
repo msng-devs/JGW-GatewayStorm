@@ -17,6 +17,7 @@ apply_exception_handlers(app)
 origins = [
     "http://127.0.0.1:8000/",
     "http://localhost:8000"
+    "http://localhost"
 ]
 
 app.add_middleware(
