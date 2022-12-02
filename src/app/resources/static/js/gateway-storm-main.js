@@ -278,6 +278,7 @@ function path_update_modal(tr_id){
     }
 }
 function start_refresh(token){
+
         $.ajax({
             type: 'GET',
             url: $("#gateway-path").text(),
