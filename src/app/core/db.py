@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from src.app.configs.config import settings
+from app.configs.config import settings
 
 DB_CONN_URL = f"mysql+pymysql://{settings.DB_USER_NM}:{settings.DB_USER_PW}@{settings.DB_HOST}/{settings.DB_NAME}"
 

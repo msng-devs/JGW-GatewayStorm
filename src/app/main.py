@@ -7,9 +7,9 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 
-from src.app.view.route import view_route
-from src.app.api.route import api_route
-from src.app.utlis.exception_handler import apply_exception_handlers
+from app.view.route import view_route
+from app.api.route import api_route
+from app.utlis.exception_handler import apply_exception_handlers
 
 app = FastAPI()
 app.include_router(api_route)

@@ -1,9 +1,9 @@
 from typing import Optional
 
-from src.app.core.db import Base
+from app.core.db import Base
 from sqlalchemy import Column, VARCHAR, INT, TEXT, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
-from src.app.utlis.repr import repr_create
+from app.utlis.repr import repr_create
 
 
 

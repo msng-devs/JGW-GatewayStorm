@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 
-from src.app.auth.auth import manager
-from src.app.core.db import get_db
-from src.app.core.model import Service
-from src.app.schemas.service import ServiceAddRequest,ServiceUpdateRequest
-from src.app.crud.service import serviceAdd,serviceUpdate,serviceDelete
+from app.auth.auth import manager
+from app.core.db import get_db
+from app.core.model import Service
+from app.schemas.service import ServiceAddRequest,ServiceUpdateRequest
+from app.crud.service import serviceAdd,serviceUpdate,serviceDelete
 
 service_route = APIRouter(prefix="/api/v1/service",tags=["service"])
 

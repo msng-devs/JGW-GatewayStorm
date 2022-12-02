@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from starlette.responses import RedirectResponse
-from src.app.utlis.exceptions import NotAuthenticatedException, NotValidUserIdOrPw
+from app.utlis.exceptions import NotAuthenticatedException, NotValidUserIdOrPw
 
 
 def NotAuthenticatedException_handler(request, exc):

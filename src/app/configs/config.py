@@ -1,4 +1,4 @@
-import src.app.configs.secret as secret
+import app.configs.secret as secret
 from pydantic import BaseSettings
 from functools import lru_cache
 import bcrypt

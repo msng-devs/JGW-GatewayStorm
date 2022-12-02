@@ -1,6 +1,6 @@
 from fastapi_login import LoginManager
-from src.app.configs.config import settings
-from src.app.utlis.exceptions import NotAuthenticatedException
+from app.configs.config import settings
+from app.utlis.exceptions import NotAuthenticatedException
 
 manager = LoginManager(settings.AUTH_SECRET_KEY, token_url='/api/v1/auth', use_cookie=True,use_header=False)
 manager.not_authenticated_exception = NotAuthenticatedException
