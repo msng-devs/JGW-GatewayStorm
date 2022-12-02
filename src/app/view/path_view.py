@@ -45,6 +45,6 @@ async def paths(service_id:int ,request: Request, db=Depends(get_db),user=Depend
         "paths":list_response_path,
         "roles":list_response_roles,
         "methods":list_response_methods,
-        "gatewaypath":settings.GATEWAY_DOMAIN + "/api/v1/refresh",
+        "gatewaypath":settings.GATEWAY_DOMAIN + "/gs/api/v1/refresh",
         "firebasekey":settings.FIREBASE_API_KEY
     })
