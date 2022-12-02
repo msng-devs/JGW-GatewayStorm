@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     if PROFILE == 'local':
         APP_NAME = 'GatewayStorm'
         CONFIG_NM = "local"
-
+        ORIGIN_DOMAIN = secret.ORIGIN_DOMAIN
         #Database Setup
         DB_HOST = secret.DB_HOST
         DB_USER_NM = secret.DB_USER_NM
@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     elif PROFILE == 'test':
         CONFIG_NM = "test"
         DB_HOST = secret.DB_HOST
+        ORIGIN_DOMAIN = secret.ORIGIN_DOMAIN
         DB_USER_NM = secret.DB_USER_NM
         DB_USER_PW = secret.DB_USER_PW
         DB_NAME = secret.DB_NAME
@@ -45,6 +46,7 @@ class Settings(BaseSettings):
 
     elif PROFILE == 'product':
         CONFIG_NM = "product"
+        ORIGIN_DOMAIN = secret.ORIGIN_DOMAIN
         DB_HOST = secret.DB_HOST
         DB_USER_NM = secret.DB_USER_NM
         DB_USER_PW = secret.DB_USER_PW

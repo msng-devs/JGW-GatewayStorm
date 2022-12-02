@@ -282,7 +282,7 @@ function start_refresh(token){
         $.ajax({
             type: 'GET',
             url: $("#gateway-path").text(),
-            dataType: 'jsonp',
+            dataType: 'json',
             contentType:'application/json; charset=utf-8',
             beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization","bearer " + token);
