@@ -6,6 +6,7 @@ from starlette.staticfiles import StaticFiles
 from app.view.route import view_route
 from app.api.route import api_route
 from app.utlis.exception_handler import apply_exception_handlers
+
 app = FastAPI()
 app.include_router(api_route)
 app.include_router(view_route)
