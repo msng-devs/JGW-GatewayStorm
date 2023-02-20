@@ -18,10 +18,6 @@ def findPathAllByServiceID(db: Session, service_id: int) -> Any | None:
     return paths
 
 
-def findOptionAll() -> List[str]:
-    return ["NO_AUTH", "AUTH", "ONLY_TOKEN_AUTH", "RBAC", "AUTH_OPTIONAL"]
-
-
 def pathAdd(db: Session, new_path: Path):
     try:
         db.add(new_path)
@@ -39,12 +35,8 @@ def pathUpdate(db: Session, target_id: int, new_path: Path):
         assert target_path is not None
         target_path.API_ROUTE_PATH = new_path.API_ROUTE_PATH
         target_path.METHOD_METHOD_PK = new_path.METHOD_METHOD_PK
-
-        target_path.API_ROUTE_OPTIONAL = new_path.API_ROUTE_OPTIONAL
-        target_path.API_ROUTE_ONLY_TOKEN = new_path.API_ROUTE_ONLY_TOKEN
-        target_path.API_ROUTE_AUTHORIZATION = new_path.API_ROUTE_AUTHORIZATION
+        target_path.ROUTE_OPTION_ROUTE_OPTION_PK = new_path.ROUTE_OPTION_ROUTE_OPTION_PK
         target_path.ROLE_ROLE_PK = new_path.ROLE_ROLE_PK
-
     except AssertionError:
         raise NotFoundItemError()
     except Exception as e:
@@ -56,7 +48,7 @@ def pathUpdate(db: Session, target_id: int, new_path: Path):
 
 def pathDelete(db: Session, target_id: int):
     try:
-        db.query(Path).filter(Path.API_ROUTE_PK == target_id).serviceDelete()
+        db.query(Path).filter(Path.API_ROUTE_PK == target_id).delete()
 
     except Exception as e:
 

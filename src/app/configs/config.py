@@ -24,8 +24,8 @@ class Settings(BaseSettings):
 
         GATEWAY_DOMAIN = secret.GATEWAY_DOMAIN
         # firebase api key(admin sdk 아님!)
-        FIREBASE_API_KEY = "AIzaSyDABK25W8JSK0fri173PaHTixd06N_1eUk"
-
+        FIREBASE_API_KEY = secret.FIREBASE_API_KEY
+        CSRF_KEY = secret.CSRF_SECRET_KEY
     elif PROFILE == 'test':
         CONFIG_NM = "test"
         DB_HOST = secret.DB_HOST
@@ -42,7 +42,8 @@ class Settings(BaseSettings):
 
         GATEWAY_DOMAIN = secret.GATEWAY_DOMAIN
         # firebase api key(admin sdk 아님!)
-        FIREBASE_API_KEY = "AIzaSyDABK25W8JSK0fri173PaHTixd06N_1eUk"
+        FIREBASE_API_KEY = secret.FIREBASE_API_KEY
+        CSRF_KEY = secret.CSRF_SECRET_KEY
 
     elif PROFILE == 'product':
         CONFIG_NM = "product"
@@ -60,8 +61,8 @@ class Settings(BaseSettings):
 
         GATEWAY_DOMAIN = secret.GATEWAY_DOMAIN
         # firebase api key(admin sdk 아님!)
-        FIREBASE_API_KEY = "AIzaSyDABK25W8JSK0fri173PaHTixd06N_1eUk"
-
+        FIREBASE_API_KEY = secret.FIREBASE_API_KEY
+        CSRF_KEY = secret.CSRF_SECRET_KEY
 @lru_cache
 def get_settings() -> Settings:
     return Settings()

@@ -1,15 +1,18 @@
+import logging
+
 from fastapi.requests import Request
 from fastapi import APIRouter, Depends
+from fastapi_csrf_protect import CsrfProtect
 from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
-
-from app.auth.auth import manager
-from app.configs.config import settings
+from app.security.auth import manager
 from app.crud.role import findRoleAll
 from app.crud.method import findMethodAll
-from app.crud.path import findPathAllByServiceID,findOptionAll
+from app.crud.option import findOptionAll
+from app.crud.path import findPathAllByServiceID
 from app.core.db import get_db
 from app.crud.service import findById
+
 
 path_view_route = APIRouter(tags=["view"])
 
@@ -17,26 +20,26 @@ templates = Jinja2Templates(directory="app/resources/templates/")
 
 
 @path_view_route.get("/path/{service_id}", response_class=HTMLResponse)
-async def paths(service_id:int ,request: Request, db=Depends(get_db),user=Depends(manager)):
-
-    service_name = findById(db,service_id).SERVICE_NM
+async def paths(service_id:int ,request: Request, db=Depends(get_db),user=Depends(manager),csrf_protect:CsrfProtect = Depends()):
 
     list_paths = findPathAllByServiceID(db,service_id)
     list_roles = findRoleAll(db)
     list_methods = findMethodAll(db)
-    list_options = findOptionAll()
+    list_options = findOptionAll(db)
+
+
 
     list_response_path = [{"id": path.API_ROUTE_PK,
                            "method_name": path.method.METHOD_NM,
                            "role_name" : path.role.ROLE_NM if path.role != None else "-",
-                           "option_name" : path.get_option(),
+                           "option_name" : path.option.ROUTE_OPTION_NM,
                            "path": path.API_ROUTE_PATH} for path in list_paths]
 
     list_response_roles = [{"id" : role.ROLE_PK,"name" : role.ROLE_NM} for role in list_roles]
-    list_response_options = [{"name" : option} for option in list_options]
+    list_response_options = [{"id" : option.ROUTE_OPTION_PK,"name" : option.ROUTE_OPTION_NM} for option in list_options]
     list_response_methods = [{"id" : method.METHOD_PK,"name" : method.METHOD_NM} for method in list_methods]
-
-
+    csrf_token = csrf_protect.generate_csrf()
+    service_name = findById(db, service_id).SERVICE_NM
     return templates.TemplateResponse("path.html", {
         "request": request,
         "service_id":service_id,
@@ -45,6 +48,5 @@ async def paths(service_id:int ,request: Request, db=Depends(get_db),user=Depend
         "paths":list_response_path,
         "roles":list_response_roles,
         "methods":list_response_methods,
-        "gatewaypath":settings.GATEWAY_DOMAIN + "/gs/api/v1/refresh",
-        "firebasekey":settings.FIREBASE_API_KEY
+        'csrf_token': csrf_token
     })

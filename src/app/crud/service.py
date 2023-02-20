@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 
 from sqlalchemy.orm import Session
@@ -5,7 +6,7 @@ from app.core.model import Service
 from app.utlis.exceptions import NotFoundItemError
 
 
-def findServiceAll(db: Session) -> Any | None:
+def findServiceAll(db: Session) -> Any | list:
     try:
         services = db.query(Service).all()
         assert services is not None
@@ -13,6 +14,7 @@ def findServiceAll(db: Session) -> Any | None:
         raise NotFoundItemError()
 
     except Exception as e:
+        logging.info(e)
         return None
 
     return services

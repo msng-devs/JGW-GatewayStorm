@@ -8,7 +8,7 @@ class PathAddRequest(BaseModel):
     method_id: int
     role_id: Optional[int]
     service_id: int
-    option: str
+    option: int
 
     class Config:
         orm_mode = True
@@ -18,7 +18,7 @@ class PathUpdateRequest(BaseModel):
     path: str = Field(..., min_length=1, max_length=45)
     method_id: int
     role_id: Optional[int]
-    option: str
+    option: int
 
     class Config:
         orm_mode = True

@@ -1,3 +1,5 @@
+var csrf_token  = $("meta[name=_csrf]").attr("content");
+
 var main = {
     init : function () {
         var _this = this;
@@ -31,34 +33,26 @@ var main = {
         $('#btn-logout').on('click', function () {
             _this.get_logout();
         });
-        $('#btn-refresh').on('click', function () {
-            _this.gateway_refresh();
-        });
         $('#btn-gateway-refresh').on('click', function () {
             _this.firebase_login();
         });
 
     },
-    gateway_refresh : function (){
-        $('#gateway-refresh-modal').modal('show');
-    },
 
     firebase_login : function () {
         var data = {
-            email : $("#gateway-refresh-id").val(),
-            password : $("#gateway-refresh-pw").val(),
+            email : $("#refresh-id").val(),
+            password : $("#refresh-pw").val(),
             returnSecureToken: true
         };
         $.ajax({
             type: 'POST',
-            url: "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="+$("#firebase-key").text(),
+            url: "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="+$("meta[name=firebase-key]").attr("content"),
             contentType:'application/json',
             data: JSON.stringify(data)
         }).done(function(data) {
-
             var token = data.idToken
-            console.log(token)
-            start_refresh(token)
+            get_accessToken(token)
         }).fail(function (error) {
             console.log(error)
             alert("email이나 비밀번호가 잘못되었습니다.");
@@ -77,6 +71,7 @@ var main = {
                 xhr.withCredentials = true;
             },
             url: "/api/v1/auth",
+            headers : {"X-CSRF-Token" : csrf_token},
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
             data: JSON.stringify(data)
@@ -93,12 +88,14 @@ var main = {
             beforeSend: function(xhr){
                 xhr.withCredentials = true;
             },
+            headers : {"X-CSRF-Token" : csrf_token},
             url: "/api/v1/auth",
             dataType: 'json',
             contentType:'application/json; charset=utf-8'
+            ,
         }).done(function() {
             alert('로그아웃했습니다.');
-            location.replace("/login");
+            location.replace("/");
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -112,10 +109,15 @@ var main = {
 
         $.ajax({
             type: 'PUT',
+            beforeSend: function(xhr){
+                xhr.withCredentials = true;
+            },
+            headers : {"X-CSRF-Token" : csrf_token},
             url: "/api/v1/service/" + $("#update-service-id").text(),
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
             data: JSON.stringify(data)
+
         }).done(function() {
             alert('서비스 정보가 업데이트 되었습니다!');
             location.reload();
@@ -132,6 +134,10 @@ var main = {
 
         $.ajax({
             type: 'POST',
+            beforeSend: function(xhr){
+                xhr.withCredentials = true;
+            },
+            headers : {"X-CSRF-Token" : csrf_token},
             url: "/api/v1/service/",
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
@@ -154,6 +160,10 @@ var main = {
 
         $.ajax({
             type: 'DELETE',
+            beforeSend: function(xhr){
+                xhr.withCredentials = true;
+            },
+            headers : {"X-CSRF-Token" : csrf_token},
             url: "/api/v1/service/" + $("#rm-service-id").text(),
             dataType: 'json',
             contentType:'application/json; charset=utf-8'
@@ -174,6 +184,10 @@ var main = {
 
         $.ajax({
             type: 'PUT',
+            beforeSend: function(xhr){
+                xhr.withCredentials = true;
+            },
+            headers : {"X-CSRF-Token" : csrf_token},
             url: "/api/v1/path/" + $("#update-path-id").text(),
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
@@ -196,6 +210,10 @@ var main = {
 
         $.ajax({
             type: 'POST',
+            beforeSend: function(xhr){
+                xhr.withCredentials = true;
+            },
+            headers : {"X-CSRF-Token" : csrf_token},
             url: "/api/v1/path/",
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
@@ -217,9 +235,14 @@ var main = {
 
         $.ajax({
             type: 'DELETE',
+            beforeSend: function(xhr){
+                xhr.withCredentials = true;
+            },
+            headers : {"X-CSRF-Token" : csrf_token},
             url: "/api/v1/path/" + $("#rm-path-id").text(),
             dataType: 'json',
-            contentType:'application/json; charset=utf-8'
+            contentType:'application/json; charset=utf-8',
+
         }).done(function() {
             alert('성공적으로 삭제되었습니다.');
             location.reload();
@@ -233,7 +256,7 @@ main.init();
 
 jQuery('#add-path-option').change(function() {
 	var state = jQuery('#add-path-option').val();
-	if ( state === 'RBAC' ) {
+	if ( state === '4' ) {
 		jQuery('#add-path-role').show();
         jQuery('#add-path-role-label').show();
 	} else {
@@ -293,3 +316,53 @@ function start_refresh(token){
             alert(JSON.stringify(error));
         });
 }
+
+function gateway_refresh (accessToken){
+        $.ajax({
+            type: 'POST',
+            xhrFields: {
+               withCredentials: true
+            },
+            url: "https://api.hrabit64.xyz/refresh",
+            dataType: 'json',
+            headers : {"Authorization" : "bearer " +accessToken},
+            crossDomain: true,
+            contentType:'application/json; charset=utf-8'
+        }).done(function(data) {
+            clean_accessToken(accessToken)
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    }
+function get_accessToken(idtoken){
+        $.ajax({
+            type: 'POST',
+            xhrFields: {
+               withCredentials: true
+            },
+            url: "https://api.hrabit64.xyz/auth/api/v2/auth/authorization?idToken="+idtoken,
+            dataType: 'json',
+            crossDomain: true,
+            contentType:'application/json; charset=utf-8'
+        }).done(function(data) {
+            gateway_refresh(data.access_token)
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    }
+    function clean_accessToken(accessToken){
+        $.ajax({
+            type: 'DELETE',
+            xhrFields: {
+               withCredentials: true
+            },
+            url: "https://api.hrabit64.xyz/auth/api/v2/auth/revoke?accessToken="+accessToken,
+            dataType: 'json',
+            crossDomain: true,
+            contentType:'application/json; charset=utf-8'
+        }).done(function(data) {
+            alert("성공!");
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    }

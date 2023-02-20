@@ -1,15 +1,23 @@
-from fastapi import APIRouter, Response, HTTPException
-from starlette import status
+import logging
 
-from app.auth.auth import load_user, manager, pwd_context
+from fastapi import APIRouter, Response, HTTPException, Depends
+from fastapi_csrf_protect import CsrfProtect
+from starlette import status
+from starlette.requests import Request
+from starlette.responses import RedirectResponse
+
+from app.security.auth import load_user, manager, pwd_context
 from app.schemas.auth import LoginReqeust
 from datetime import timedelta
 
-auth_route = APIRouter(prefix="/api/v1/auth", tags=["auth"])
+auth_route = APIRouter(prefix="/api/v1/auth", tags=["security"])
 
 
 @auth_route.post("")
-async def login(response: Response, req: LoginReqeust):
+async def login(request: Request,response: Response, req: LoginReqeust, csrf_protect: CsrfProtect = Depends()):
+    csrf_token = csrf_protect.get_csrf_from_headers(request.headers)
+    csrf_protect.validate_csrf(csrf_token)
+
     id = req.id
     pw = req.pw
 
@@ -31,10 +39,14 @@ async def login(response: Response, req: LoginReqeust):
         data=dict(sub=id), expires=timedelta(hours=24)
     )
     manager.set_cookie(response,token)
-    return {"message": "ok"}
+    logging.info("OK")
+    return "ok"
 
 @auth_route.delete("")
-async def logout(response: Response):
+async def logout(request: Request,response: Response, csrf_protect:CsrfProtect = Depends()):
+    csrf_token = csrf_protect.get_csrf_from_headers(request.headers)
+    csrf_protect.validate_csrf(csrf_token)
+
     response.delete_cookie(key="access_token",httponly=True)
     response.delete_cookie(key="access-token", httponly=True)
-    return {"message": "ok"}
+    return "ok"

@@ -2,7 +2,8 @@ import logging
 from app.configs.config import settings
 
 
-FORMAT = '%(asctime)s %(clientip)-15s %(user)-8s %(message)s'
+FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
 if settings.CONFIG_NM == "local" or settings.CONFIG_NM == "test":
     logging.basicConfig(format=FORMAT, level=logging.DEBUG)
 
