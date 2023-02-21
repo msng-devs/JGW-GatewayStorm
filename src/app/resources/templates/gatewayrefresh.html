@@ -48,10 +48,11 @@
                                     <input id="refresh-agree" type="checkbox" required/> Refresh 기능 사용의 위험성을 인지했습니다.
                                 </label>
                             </div>
-                            <button id="btn-gateway-refresh" class="btn btn-success">
+
+                        </form>
+         <button id="btn-gateway-refresh" class="btn btn-success">
                                 refresh
                             </button>
-                        </form>
                     </div>
                     <div class="col-md-4">
                     </div>
@@ -62,7 +63,7 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-loading-overlay@1.1.0/dist/js-loading-overlay.min.js"></script>
-    <script src =" {{ url_for('static', path='/js/refresh-gateway.js')}}?ver=3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-loading-overlay@1.2.0/dist/js-loading-overlay.min.js"></script>
+    <script src =" {{ url_for('static', path='/js/refresh-gateway.js')}}"></script>
 </body>
 </html>

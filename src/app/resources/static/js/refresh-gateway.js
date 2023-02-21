@@ -1,3 +1,5 @@
+
+const JsLoadingOverlay = window.JsLoadingOverlay
 var configs = {
     'overlayBackgroundColor': '#333333',
     'overlayOpacity': 0.6,
@@ -12,12 +14,11 @@ var configs = {
     'containerID': null,
 };
 var csrf_token  = $("meta[name=_csrf]").attr("content");
-
 var main = {
     init : function () {
         var _this = this;
         $('#btn-gateway-refresh').on('click', function () {
-            if($("input:checkbox[name='refresh-agree']").is(":checked") === true){
+            if($("input:checkbox[id='refresh-agree']").is(":checked") === true){
                 JsLoadingOverlay.show(configs);
                 _this.firebase_login();
             }
@@ -105,3 +106,4 @@ function get_accessToken(idtoken){
             alert(JSON.stringify(error));
         });
     }
+
