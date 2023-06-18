@@ -2,8 +2,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const{ verifyToken }= require('./middleware/authentication.middleware');
-
+const{ processAuthentication }= require('./middleware/authentication.middleware');
+const{ exceptionHandler }= require('./middleware/exceptionHandle.middleware');
 
 var app = express();
 
@@ -12,6 +12,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/dist')));
-app.use(verifyToken)
+
+//middleware
+app.use(processAuthentication)
+app.use(exceptionHandler)
 
 module.exports = app;

@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database.config');
 
-// 미리 정의된 다른 모델들을 불러옵니다.
+
 const Method = require('./method.model');
 const Role = require('./role.model');
 const Service = require('./service.model');
