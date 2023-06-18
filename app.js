@@ -3,7 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const{ processAuthentication }= require('./middleware/authentication.middleware');
-const{ exceptionHandler }= require('./middleware/exceptionHandle.middleware');
+const{ exceptionHandler }= require('./middleware/exceptionHandler.middleware');
 
 var app = express();
 
