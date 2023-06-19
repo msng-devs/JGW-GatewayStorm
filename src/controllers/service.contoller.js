@@ -1,5 +1,5 @@
 const Service = require('../models/service.model');
-const {createPage} = require("/utlis/pagenation");
+const {createPage} = require("/src/utlis/pagenation");
 const ApplicationException = require("../utlis/exception/application.exception");
 const ApplicationErrorCode = require("../utlis/exception/application.exception");
 const assert = require("assert");

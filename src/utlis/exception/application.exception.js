@@ -21,8 +21,15 @@ const ApplicationErrorCode = {
         status: 403,
         code: "GS_002",
         title: "Authentication Failed",
+    },
+    REQUEST_ARGS_ERROR:{
+        status: 404,
+        code: "GS_003",
+        title: "Request Args Error",
     }
 }
 
-module.exports = ApplicationException;
-module.exports = ApplicationErrorCode;
+module.exports = {
+    ApplicationException,
+    ApplicationErrorCode
+};

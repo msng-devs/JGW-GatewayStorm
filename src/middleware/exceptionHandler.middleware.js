@@ -1,23 +1,24 @@
-const ApplicationException = require("../utlis/exception/application.exception");
+const {ApplicationException} = require("../utlis/exception/application.exception");
 const {ValidationError, ForeignKeyConstraintError, UniqueConstraintError, DatabaseError} = require("sequelize");
 
-exports.exceptionHandler = (err, req, res, next) => {
+const exceptionHandler = (err, req, res, next) => {
     console.log(err);
+    if (res.headersSent) {
+        return next(err)
+    }
 
-    switch (err) {
-
+    switch (err.constructor) {
         case ApplicationException:
             const response = {
                 timestamp: new Date(),
-                status: err.status,
-                error: err.title,
-                code: err.code,
+                status: err.code.status,
+                error: err.code.title,
+                code: err.code.code,
                 message: err.message,
                 path: req.url
-            }
-            res.status(err.status).send(response);
+            };
+            res.status(err.code.status).send(response);
             break;
-
         case SyntaxError:
             res.status(400).send({
                 timestamp: new Date(),
@@ -40,7 +41,6 @@ exports.exceptionHandler = (err, req, res, next) => {
                 path: req.url
             });
             break;
-
         case DatabaseError:
             res.status(500).send({
                 timestamp: new Date(),
@@ -51,7 +51,6 @@ exports.exceptionHandler = (err, req, res, next) => {
                 path: req.url
             });
             break;
-
         default:
             res.status(500).send({
                 timestamp: new Date(),
@@ -61,6 +60,8 @@ exports.exceptionHandler = (err, req, res, next) => {
                 code: "None",
                 path: req.url
             });
-
     }
 }
+
+
+module.exports = {exceptionHandler};
