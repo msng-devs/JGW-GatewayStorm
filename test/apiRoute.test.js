@@ -4,6 +4,7 @@ const {createData,clearData} = require("./utlis/dataController");
 const request = require("supertest")
 const sequelize  = require("../config/database.config");
 const {QueryTypes} = require("sequelize");
+require('iconv-lite').encodingExists('foo');
 
 beforeEach(async () => {
     await createData();
@@ -20,10 +21,10 @@ test('find single', async () => {
 
     expect(response.body.id).toBe(1);
     expect(response.body.path).toBe('/api/v1/post');
-    expect(response.body.method).toBe(1);
-    expect(response.body.role).toBe(5);
-    expect(response.body.service).toBe(1);
-    expect(response.body.routeOption).toBe(4);
+    expect(response.body.method_id).toBe(1);
+    expect(response.body.role_id).toBe(5);
+    expect(response.body.service_id).toBe(1);
+    expect(response.body.route_option_id).toBe(4);
 });
 
 test("create new ApiRoute", async () =>{
@@ -42,10 +43,10 @@ test("create new ApiRoute", async () =>{
 
     expect(response.body.id).toBe(5);
     expect(response.body.path).toBe('/api/v1/post');
-    expect(response.body.method).toBe(3);
-    expect(response.body.role).toBe(null);
-    expect(response.body.service).toBe(1);
-    expect(response.body.routeOption).toBe(1);
+    expect(response.body.method_id).toBe(3);
+    expect(response.body.role_id).toBe(null);
+    expect(response.body.service_id).toBe(1);
+    expect(response.body.route_option_id).toBe(1);
 })
 
 test("delete single apiRoute", async () =>{
@@ -75,10 +76,10 @@ test("update single apiRoute", async () =>{
 
     expect(response.body.id).toBe(1);
     expect(response.body.path).toBe('/api/v1/post');
-    expect(response.body.method).toBe(5);
-    expect(response.body.role).toBe(5);
-    expect(response.body.service).toBe(1);
-    expect(response.body.routeOption).toBe(4);
+    expect(response.body.method_id).toBe(5);
+    expect(response.body.role_id).toBe(5);
+    expect(response.body.service_id).toBe(1);
+    expect(response.body.route_option_id).toBe(4);
 })
 
 test("find all api route with service id", async () =>{
@@ -91,17 +92,17 @@ test("find all api route with service id", async () =>{
 
     expect(response.body[0].id).toBe(2);
     expect(response.body[0].path).toBe('/api/v1/post');
-    expect(response.body[0].method).toBe(2);
-    expect(response.body[0].role).toBe(null);
-    expect(response.body[0].service).toBe(1);
-    expect(response.body[0].routeOption).toBe(1);
+    expect(response.body[0].method_id).toBe(2);
+    expect(response.body[0].role_id).toBe(null);
+    expect(response.body[0].service_id).toBe(1);
+    expect(response.body[0].route_option_id).toBe(1);
 
     expect(response.body[1].id).toBe(1);
     expect(response.body[1].path).toBe('/api/v1/post');
-    expect(response.body[1].method).toBe(1);
-    expect(response.body[1].role).toBe(5);
-    expect(response.body[1].service).toBe(1);
-    expect(response.body[1].routeOption).toBe(4);
+    expect(response.body[1].method_id).toBe(1);
+    expect(response.body[1].role_id).toBe(5);
+    expect(response.body[1].service_id).toBe(1);
+    expect(response.body[1].route_option_id).toBe(4);
 
 
 })

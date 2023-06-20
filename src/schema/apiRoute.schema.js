@@ -1,6 +1,13 @@
 const { Schema } = require('express-validator')
 
 const apiRouteAddRequest = {
+    serviceId: {
+        notEmpty: true,
+        in: ['params'],
+        isInt: {
+            errorMessage: 'service id가 없습니다.',
+        }
+    },
     path: {
         notEmpty: true,
         in: ['body'],
@@ -33,6 +40,7 @@ const apiRouteAddRequest = {
 }
 
 const apiRouteUpdateRequest = {
+
     path: {
         notEmpty: true,
         in: ['body'],

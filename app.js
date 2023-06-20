@@ -23,9 +23,8 @@ const env = process.env.NODE_ENV || 'local';
 
 
 //set route
-const apiRouter = require('./src/routes/apiRoute.route');
-app.use('/api/v1/service', apiRouter);
-
+app.use('/api/v1/service', require('./src/routes/apiRoute.route'));
+app.use('/api/v1/service', require('./src/routes/service.route'));
 //middleware
 const{ exceptionHandler }= require('./src/middleware/exceptionHandler.middleware');
 const {processAuthentication} = require("./src/middleware/authentication.middleware");

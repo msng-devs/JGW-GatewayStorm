@@ -4,6 +4,7 @@ const {createData,clearData} = require("./utlis/dataController");
 const request = require("supertest")
 const sequelize  = require("../config/database.config");
 const {QueryTypes} = require("sequelize");
+require('iconv-lite').encodingExists('foo');
 
 beforeEach(async () => {
     await createData();
