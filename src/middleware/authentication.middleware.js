@@ -11,6 +11,7 @@ const processAuthentication = async (req, res, next) => {
     const decodedToken = await verifyToken(idToken)
     await checkMemberInfo(decodedToken);
 
+    next();
 };
 
 const checkMemberInfo = async (decodedToken) => {

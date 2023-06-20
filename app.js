@@ -13,11 +13,14 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/dist')));
 
+const{ requestLogger }= require('./src/middleware/requestLogger.middleware')
+app.use(requestLogger)
+
 const env = process.env.NODE_ENV || 'local';
-// if(env !== 'test'){
-//     const{ processAuthentication }= require('./src/middleware/authentication.middleware');
-//     app.use(processAuthentication);
-// }
+if(env !== 'test'){
+    const{ processAuthentication }= require('./src/middleware/authentication.middleware');
+    app.use(processAuthentication);
+}
 
 
 //set route
