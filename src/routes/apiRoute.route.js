@@ -4,11 +4,11 @@ const { apiRouteUpdateRequest , apiRouteAddRequest } = require( "../schema/apiRo
 const express = require("express");
 const router = express.Router();
 
-router.post("/",checkSchema(apiRouteAddRequest), require("../controllers/apiRoute.contoller").createApiRoute);
-router.put("/:id",checkSchema(apiRouteUpdateRequest), require("../controllers/apiRoute.contoller").updateApiRoute);
-router.delete("/:id", require("../controllers/apiRoute.contoller").deleteApiRoute);
-router.get("/:id", require("../controllers/apiRoute.contoller").findApiRouteById);
-router.get("/", require("../controllers/apiRoute.contoller").findApiRouteByServiceId);
+router.post("/:serviceId/apiRoute",checkSchema(apiRouteAddRequest), require("../controllers/apiRoute.contoller").createApiRoute);
+router.put("/:serviceId/apiRoute/:id",checkSchema(apiRouteUpdateRequest), require("../controllers/apiRoute.contoller").updateApiRoute);
+router.delete("/:serviceId/apiRoute/:id", require("../controllers/apiRoute.contoller").deleteApiRoute);
+router.get("/:serviceId/apiRoute/:id", require("../controllers/apiRoute.contoller").findApiRouteById);
+router.get("/:serviceId/apiRoute/", require("../controllers/apiRoute.contoller").findApiRouteByServiceId);
 
 
 module.exports = router;

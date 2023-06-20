@@ -23,14 +23,7 @@ const apiRouteAddRequest = {
             errorMessage: 'role id 는 양수여야 합니다.',
         }
     },
-    service_id: {
-        notEmpty: true,
-        in: ['body'],
-        isInt: {
-            errorMessage: 'service id 는 양수여야 합니다.',
-        }
-    },
-    option:{
+    option_id:{
         notEmpty: true,
         in: ['body'],
         isInt: {

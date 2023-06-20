@@ -13,17 +13,18 @@ exports.getApiRoute = async (req, res, next) => {
 };
 
 exports.createApiRoute = async (req, res, next) => {
-    const foreignItems = await checkExistForeignTable(req.body.method,req.body.role_id,req.body.service_Id,req.body.option)
-    await checkUnique(req.body.path,req.body.method,req.body.serviceId)
+    const foreignItems = await checkExistForeignTable(req.body.method, req.body.role_id, req.params.serviceId, req.body.option_id)
+    await checkUnique(req.body.path, foreignItems.method.id, foreignItems.service.id)
 
-    const apiRoute = new ApiRoute({
+    const apiRoute = {
         path: req.body.path,
-        method: foreignItems.method,
-        role: foreignItems.role,
-        service: foreignItems.service,
-        routeOption: foreignItems.routeOption
-    });
-    const newApiRoute = await ApiRoute.create(req.body);
+        method: foreignItems.method.id,
+        role: (foreignItems.role)?foreignItems.role.id:null,
+        service: foreignItems.service.id,
+        routeOption: foreignItems.routeOption.id
+    };
+
+    const newApiRoute = await ApiRoute.create(apiRoute);
     res.json(newApiRoute);
 
 }
@@ -38,8 +39,10 @@ exports.findApiRouteById = async (req, res, next) => {
 exports.findApiRouteByServiceId = async (req, res, next) => {
     const apiRoute = await ApiRoute.findAll({
         where: {
-                serviceId: req.query.serviceId
-        }
+            service: req.params.serviceId,
+
+        },
+        order: [['path','ASC'],['id', 'DESC']]
     });
     res.json(apiRoute);
 }
@@ -47,9 +50,10 @@ exports.findApiRouteByServiceId = async (req, res, next) => {
 exports.updateApiRoute = async (req, res, next) => {
 
     const apiRoute = await ApiRoute.findByPk(req.params.id);
+    console.log(apiRoute)
     if(!apiRoute) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND,"Api Route not found");
 
-    await checkUnique(req.body.path,req.body.method,apiRoute.service.id)
+    await checkUnique(req.body.path,req.body.method,apiRoute.service)
 
     await apiRoute.update(req.body);
     res.json(apiRoute);
@@ -64,13 +68,12 @@ exports.deleteApiRoute = async (req, res, next) => {
 
 }
 
-
 const checkUnique = async (path,method,service) => {
     const apiRoute = await ApiRoute.findOne({
         where: {
             path: path,
             method: method,
-            serviceId: service
+            service: service
         }
     });
     if(apiRoute) throw new ApplicationException(ApplicationErrorCode.ALREADY_EXISTS,"이미 해당 서비스내에 같은 메소드와 같은 path를 지닌 route 정보가 있습니다.");

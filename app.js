@@ -14,17 +14,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/dist')));
 
 const env = process.env.NODE_ENV || 'local';
-if(env !== 'test'){
-    const{ processAuthentication }= require('./src/middleware/authentication.middleware');
-    app.use(processAuthentication);
-}
+// if(env !== 'test'){
+//     const{ processAuthentication }= require('./src/middleware/authentication.middleware');
+//     app.use(processAuthentication);
+// }
 
 
 
 
 //set route
 const apiRouter = require('./src/routes/apiRoute.route');
-app.use('/api/v1/apiRoute', apiRouter);
+app.use('/api/v1/service', apiRouter);
 
 //middleware
 const{ exceptionHandler }= require('./src/middleware/exceptionHandler.middleware');
