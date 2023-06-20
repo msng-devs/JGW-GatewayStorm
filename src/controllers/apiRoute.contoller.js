@@ -45,10 +45,7 @@ exports.findApiRouteByServiceId = async (req, res, next) => {
         where: {
             service: req.params.serviceId,
 
-        },
-        offset: page.offset,
-        limit: page.limit,
-        order: [['path', 'ASC'], ['id', 'DESC']]
+        }, offset: page.offset, limit: page.limit, order: [['path', 'ASC'], ['id', 'DESC']]
     });
 
     res.json(apiRoute.map(apiRouteToJson));
@@ -63,10 +60,7 @@ exports.updateApiRoute = async (req, res, next) => {
     await checkUnique(req.body.path, req.body.method, apiRoute.service)
 
     await apiRoute.update({
-        path: req.body.path,
-        method: req.body.method,
-        role: req.body.role_id,
-        routeOption: req.body.option_id
+        path: req.body.path, method: req.body.method, role: req.body.role_id, routeOption: req.body.option_id
     });
     res.json(apiRouteToJson(apiRoute));
 }
@@ -83,9 +77,7 @@ exports.deleteApiRoute = async (req, res, next) => {
 const checkUnique = async (path, method, service) => {
     const apiRoute = await ApiRoute.findOne({
         where: {
-            path: path,
-            method: method,
-            service: service
+            path: path, method: method, service: service
         }
     });
     if (apiRoute) throw new ApplicationException(ApplicationErrorCode.ALREADY_EXISTS, "이미 해당 서비스내에 같은 메소드와 같은 path를 지닌 route 정보가 있습니다.");
@@ -115,10 +107,7 @@ const checkExistForeignTable = async (methodId, roleId, serviceId, routeOptionId
         if (!routeOption) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "해당 RouteOption을 찾을 수 없습니다.");
     }
     return {
-        method: method,
-        role: role,
-        service: service,
-        routeOption: routeOption
+        method: method, role: role, service: service, routeOption: routeOption
     }
 }
 

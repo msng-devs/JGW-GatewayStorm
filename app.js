@@ -9,7 +9,7 @@ var app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/dist')));
 
@@ -20,13 +20,15 @@ const env = process.env.NODE_ENV || 'local';
 // }
 
 
-
-
 //set route
 app.use('/api/v1/service', require('./src/routes/apiRoute.route'));
 app.use('/api/v1/service', require('./src/routes/service.route'));
+app.use('/api/v1/role', require('./src/routes/role.route'));
+app.use('/api/v1/method', require('./src/routes/method.route'));
+app.use('/api/v1/routeOption', require('./src/routes/routeOption.route'));
+
 //middleware
-const{ exceptionHandler }= require('./src/middleware/exceptionHandler.middleware');
+const {exceptionHandler} = require('./src/middleware/exceptionHandler.middleware');
 const {processAuthentication} = require("./src/middleware/authentication.middleware");
 app.use(exceptionHandler);
 

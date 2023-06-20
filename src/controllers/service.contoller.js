@@ -5,9 +5,7 @@ const {ApplicationException, ApplicationErrorCode} = require("../utlis/exception
 exports.getServices = async (req, res, next) => {
     const page = createPage(req);
     const services = await Service.findAll({
-        offset: page.offset,
-        limit: page.limit,
-        order: [['id', 'DESC']]
+        offset: page.offset, limit: page.limit, order: [['id', 'DESC']]
     });
     res.json(services.map(serviceToJson));
 };
@@ -15,9 +13,7 @@ exports.getServices = async (req, res, next) => {
 exports.createService = async (req, res, next) => {
     await checkUnique(req.body.name, req.body.domain);
     const service = {
-        name: req.body.name,
-        domain: req.body.domain,
-        index: req.body.index
+        name: req.body.name, domain: req.body.domain, index: req.body.index
     }
     const newService = await Service.create(service);
     res.json(serviceToJson(newService));
@@ -38,9 +34,7 @@ exports.updateService = async (req, res, next) => {
     await checkUnique(req.body.name, req.body.domain)
 
     await service.update({
-        name: req.body.name,
-        domain: req.body.domain,
-        index: req.body.index
+        name: req.body.name, domain: req.body.domain, index: req.body.index
     });
     res.json(serviceToJson(service));
 
@@ -76,9 +70,6 @@ const checkUnique = async (name, domain) => {
 
 const serviceToJson = (service) => {
     return {
-        id: Number(service.id),
-        name: String(service.name),
-        domain: String(service.domain),
-        index: String(service.index)
+        id: Number(service.id), name: String(service.name), domain: String(service.domain), index: String(service.index)
     }
 }
