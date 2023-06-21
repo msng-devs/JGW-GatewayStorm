@@ -84,3 +84,4 @@ env/.env.product
 resource/firebase.json
 env/.env
 env/.env.test
+.env
