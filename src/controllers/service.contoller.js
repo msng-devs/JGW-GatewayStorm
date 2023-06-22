@@ -3,9 +3,9 @@ const {createPage} = require("../utlis/pagenation");
 const {ApplicationException, ApplicationErrorCode} = require("../utlis/exception/application.exception");
 
 exports.getServices = async (req, res, next) => {
-    const page = createPage(req);
+
     const services = await Service.findAll({
-        offset: page.offset, limit: page.limit, order: [['id', 'DESC']]
+        order: [['id', 'DESC']]
     });
     res.json(services.map(serviceToJson));
 };

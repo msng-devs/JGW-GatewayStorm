@@ -1,5 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
-router.get("/",require("../controllers/routeOption.contoller").getRouteOptions);
+const{ processAuthentication }= require('../middleware/authentication.middleware');
+router.get("/",processAuthentication,require("../controllers/routeOption.contoller").getRouteOptions);
 module.exports = router;

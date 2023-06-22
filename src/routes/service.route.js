@@ -3,10 +3,11 @@ const {serviceAddRequest, serviceUpdateRequest} = require('../schema/service.sch
 
 const express = require("express");
 const router = express.Router();
+const{ processAuthentication }= require('../middleware/authentication.middleware');
 
-router.get("/", require("../controllers/service.contoller").getServices);
-router.get("/:id", require("../controllers/service.contoller").findServiceById);
-router.post("/", checkSchema(serviceAddRequest) ,require("../controllers/service.contoller").createService);
-router.put("/:id",checkSchema(serviceUpdateRequest), require("../controllers/service.contoller").updateService);
-router.delete("/:id", require("../controllers/service.contoller").deleteService);
+router.get("/", processAuthentication ,require("../controllers/service.contoller").getServices);
+router.get("/:id",processAuthentication , require("../controllers/service.contoller").findServiceById);
+router.post("/",[processAuthentication ,checkSchema(serviceAddRequest)] ,require("../controllers/service.contoller").createService);
+router.put("/:id",[processAuthentication ,checkSchema(serviceUpdateRequest)], require("../controllers/service.contoller").updateService);
+router.delete("/:id",processAuthentication, require("../controllers/service.contoller").deleteService);
 module.exports = router;

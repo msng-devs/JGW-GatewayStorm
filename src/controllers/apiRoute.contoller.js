@@ -40,12 +40,12 @@ exports.findApiRouteById = async (req, res, next) => {
 }
 
 exports.findApiRouteByServiceId = async (req, res, next) => {
-    const page = createPage(req);
+
     const apiRoute = await ApiRoute.findAll({
         where: {
             service: req.params.serviceId,
 
-        }, offset: page.offset, limit: page.limit, order: [['path', 'ASC'], ['id', 'DESC']]
+        }, order: [['path', 'ASC'], ['id', 'DESC']]
     });
 
     res.json(apiRoute.map(apiRouteToJson));
