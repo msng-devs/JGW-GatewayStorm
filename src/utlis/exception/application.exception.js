@@ -26,6 +26,11 @@ const ApplicationErrorCode = {
         status: 404,
         code: "GS_003",
         title: "Request Args Error",
+    },
+    ALREADY_EXIST:{
+        status: 400,
+        code: "GS_004",
+        title: "Already Exist",
     }
 }
 

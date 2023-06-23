@@ -1,5 +1,5 @@
 <template>
-  <div v-if="alerts.length > 1">
+  <div v-if="alerts.length >= 1">
     <v-alert
         v-for="(alert, index) in alerts"
         :key="alert.id"
