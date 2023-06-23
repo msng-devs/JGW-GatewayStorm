@@ -13,7 +13,7 @@
         <v-container class="centered-container" v-if="isLoading">
                 <v-row class="text-center" justify="center" align="center">
                   <v-col cols="12" md="12" class="my-2 py-2">
-                    <v-img :width="800" src="mainlogo.png" class="mx-auto"></v-img>
+                    <v-img :width="800" src="/mainlogo.png" class="mx-auto"></v-img>
                   </v-col>
                   <v-col cols="12" md="12" class="my-2 py-2">
                     <v-progress-circular

@@ -57,7 +57,8 @@ exports.updateApiRoute = async (req, res, next) => {
     console.log(apiRoute)
     if (!apiRoute) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "해당 라우트를 찾을 수 없습니다.");
     const foreignItems = await checkExistForeignTable(req.body.method, req.body.role_id, null, req.body.option_id)
-    await checkUnique(req.body.path, req.body.method, apiRoute.service)
+
+    if(apiRoute.path !== req.body.path || apiRoute.method !== req.body.path) await checkUnique(req.body.path, req.body.method, apiRoute.service)
 
     await apiRoute.update({
         path: req.body.path, method: req.body.method, role: req.body.role_id, routeOption: req.body.option_id

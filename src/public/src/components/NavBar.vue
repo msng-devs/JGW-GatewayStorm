@@ -1,11 +1,11 @@
 <template>
     <v-app-bar color="grey-darken-4" class="py-3">
 
-      <v-toolbar-title><v-img :width="200" src="mainlogo.png"></v-img></v-toolbar-title>
+      <v-toolbar-title><v-img :width="200" src="/mainlogo.png"></v-img></v-toolbar-title>
 
       <v-spacer></v-spacer>
 
-      <v-btn color="indigo-lighten-2" class="ma-2">
+      <v-btn color="indigo-lighten-2" class="ma-2" @click="goHome">
         <v-icon class="mx-2" icon="mdi-lan"></v-icon>
         Services
       </v-btn>

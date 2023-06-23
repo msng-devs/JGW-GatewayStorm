@@ -8,13 +8,13 @@
 
 
             <v-row justify="center" align="center">
-              <v-col cols="12" md="8">
+              <v-col cols="12" md="10">
                 <Alters ref="alters"></Alters>
               </v-col>
             </v-row >
 
             <v-row justify="center" align="center">
-              <v-col cols="12" md="8">
+              <v-col cols="12" md="10">
 
                 <v-sheet :elevation="5" :rounded="true" class="m-5 pa-15">
                   <v-alert border="start" color="indigo-lighten-1" class="mb-10">
@@ -117,6 +117,7 @@ const triggerInitData = async (accessToken) => {
     await initData();
   }
 }
+watch(accessToken, triggerInitData, { immediate: true });
 
 //서비스 추가
 const addDialog = ref(false);
@@ -134,7 +135,7 @@ const processAddError = (type,message) => {
   alters.value.addAlert(type,message);
 }
 
-watch(accessToken, triggerInitData, { immediate: true });
+
 
 const insertService = (service) => {
   services.value.unshift(service);

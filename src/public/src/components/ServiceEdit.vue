@@ -164,7 +164,7 @@ const updateService = async () => {
   const data = {
     name: name.value,
     domain: domain.value,
-    description: description.value
+    index: description.value
   }
   const response = await axios
       .put('/api/v1/service/' + id.value, data, {
