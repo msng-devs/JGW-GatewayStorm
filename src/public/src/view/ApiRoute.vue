@@ -44,7 +44,7 @@
                 </p>
                 <v-spacer></v-spacer>
               </v-alert>
-              <RouteTable v-if="!isLoading" :routes="routes" :methods="methods" :roles="roles" :options="routeOptions"/>
+              <RouteTable v-if="!isLoading" :routes="routes" :methods="methods" :roles="roles" :options="routeOptions" @on-edit="openEditDialog"/>
               <v-spacer></v-spacer>
               <v-row justify="center" class="mt-10">
 
@@ -53,8 +53,12 @@
                   신규 아이템 추가
                 </v-btn>
               </v-row>
-              <RouteAdd v-if="!isLoading" ref="addRouteDialog" :id="id" :roles="reverseObject(roles)" @on-error="processAddError" @add-route="addRoute"
+              <RouteAdd v-if="!isLoading" ref="addRouteDialog" :id="id" :roles="reverseObject(roles)"
+                        @on-error="processAddError" @add-api-route="addRoute"
                         :options="reverseObject(routeOptions)" :methods="reverseObject(methods)"></RouteAdd>
+              <RouteEdit v-if="!isLoading" ref="editRouteDialog" :roles="reverseObject(roles)"
+                         @on-error="processAddError" @updateApiRoute="updateRoute" @deleteApiRoute="deleteRoute" :id="id"
+                         :options="reverseObject(routeOptions)" :methods="reverseObject(methods)"></RouteEdit>
             </v-sheet>
           </v-col>
         </v-row>
@@ -80,6 +84,7 @@ import {storeToRefs} from "pinia";
 import router from "../router.js";
 import RouteTable from "../components/RouteTable.vue";
 import RouteAdd from "../components/RouteAdd.vue";
+import RouteEdit from "../components/RouteEdit.vue";
 
 const route = useRoute()
 const id = route.params.id
@@ -260,10 +265,44 @@ const openAddDialog = () => {
 }
 
 const addRoute = (route) => {
-  routes.value.push(route);
+  routes.value.unshift(route);
 }
-const processAddError = (type,message) => {
-  alters.value.addAlert(type,message);
+const processAddError = (type, message) => {
+  alters.value.addAlert(type, message);
+}
+
+//edit route
+const editRouteDialog = ref(false);
+const openEditDialog = (item) => {
+
+
+  editRouteDialog.value.openDialog(item.id,item.path,item.role_id,item.method_id,item.route_option_id);
+}
+
+
+const deleteRoute = (id) => {
+  const index = routes.value.findIndex(route => route.id === id);
+  if (index !== -1) {
+    // 주어진 id에 해당하는 서비스를 제거하고, 새 배열을 만들어서 할당합니다.
+    routes.value = [
+      ...routes.value.slice(0, index),
+      ...routes.value.slice(index + 1)
+    ];
+  }
+}
+
+const updateRoute = (id, data) => {
+  console.log(id)
+  console.log(data)
+  const index = routes.value.findIndex(route => route.id === id);
+  if (index !== -1) {
+    // 기존의 서비스 객체와 새로운 서비스 데이터를 병합하고, 새 배열을 만들어서 할당합니다.
+    routes.value = [
+      ...routes.value.slice(0, index),
+      { ...routes.value[index], ...data },
+      ...routes.value.slice(index + 1)
+    ];
+  }
 }
 </script>
 

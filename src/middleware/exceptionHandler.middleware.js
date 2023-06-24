@@ -9,6 +9,7 @@ const exceptionHandler = (err, req, res, next) => {
 
     switch (err.constructor) {
         case ApplicationException:
+            console.log(err.code)
             const response = {
                 timestamp: new Date(),
                 status: err.code.status,

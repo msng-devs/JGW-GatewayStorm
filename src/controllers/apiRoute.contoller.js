@@ -15,12 +15,14 @@ exports.getApiRoute = async (req, res, next) => {
 
 exports.createApiRoute = async (req, res, next) => {
     const foreignItems = await checkExistForeignTable(req.body.method, req.body.role_id, null, req.body.option_id)
-    await checkUnique(req.body.path, foreignItems.method.id, req.params.serviceId)
+    await checkUnique(req.body.path, req.body.method, req.params.serviceId)
+
+    if(Number(req.body.option_id) === 4 && req.body.role_id === null) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "RBAC option에는 Role이 필수입니다.");
 
     const apiRoute = {
         path: req.body.path,
         method: req.body.method,
-        role: (req.body.role_id) ? req.body.role_id : null,
+        role: (req.body.option_id === 4) ? req.body.role_id : null,
         service: req.params.serviceId,
         routeOption: req.body.option_id
     };
@@ -57,11 +59,14 @@ exports.updateApiRoute = async (req, res, next) => {
     console.log(apiRoute)
     if (!apiRoute) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "해당 라우트를 찾을 수 없습니다.");
     const foreignItems = await checkExistForeignTable(req.body.method, req.body.role_id, null, req.body.option_id)
-
-    if(apiRoute.path !== req.body.path || apiRoute.method !== req.body.path) await checkUnique(req.body.path, req.body.method, apiRoute.service)
+    if(Number(req.body.option_id) === 4 && req.body.role_id === null) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "RBAC option에는 Role이 필수입니다.");
+    if(apiRoute.path !== req.body.path || apiRoute.method !== req.body.method) await checkUnique(req.body.path, req.body.method, apiRoute.service)
 
     await apiRoute.update({
-        path: req.body.path, method: req.body.method, role: req.body.role_id, routeOption: req.body.option_id
+        path: req.body.path,
+        method: req.body.method,
+        role: (Number(req.body.option_id === 4)) ? req.body.role_id : null,
+        routeOption: req.body.option_id
     });
     res.json(apiRouteToJson(apiRoute));
 }

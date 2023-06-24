@@ -144,7 +144,6 @@ const insertService = (service) => {
 const deleteService = (id) => {
   const index = services.value.findIndex(service => service.id === id);
   if (index !== -1) {
-    // 주어진 id에 해당하는 서비스를 제거하고, 새 배열을 만들어서 할당합니다.
     services.value = [
       ...services.value.slice(0, index),
       ...services.value.slice(index + 1)
@@ -157,7 +156,6 @@ const updateService = (id, data) => {
   console.log(data)
   const index = services.value.findIndex(service => service.id === id);
   if (index !== -1) {
-    // 기존의 서비스 객체와 새로운 서비스 데이터를 병합하고, 새 배열을 만들어서 할당합니다.
     services.value = [
       ...services.value.slice(0, index),
       { ...services.value[index], ...data },

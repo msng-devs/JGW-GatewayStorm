@@ -68,8 +68,7 @@ const itemsPerPage = ref(10); // Or whatever number you prefer
 
 //서비스 편집
 const onEdit = (item) => {
-  console.log(item)
-  emits('on-edit', item.name, item.index, item.domain,  item.id)
+  emits('on-edit', item)
 };
 
 //Route로 이동

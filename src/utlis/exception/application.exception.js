@@ -31,7 +31,7 @@ const ApplicationErrorCode = {
         status: 400,
         code: "GS_004",
         title: "Already Exist",
-    }
+    },
 }
 
 module.exports = {

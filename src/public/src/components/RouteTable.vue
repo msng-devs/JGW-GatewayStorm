@@ -25,7 +25,7 @@
         </v-chip>
       </template>
       <template v-slot:item.action="{ item }">
-        <v-btn small rounded="xl" @click="onEdit(item.columns)" class="mr-2" icon color="light-blue-darken-4">
+        <v-btn small rounded="xl" @click="onEdit(item)" class="mr-2" icon color="light-blue-darken-4">
           <v-icon>
             mdi-pencil
           </v-icon>
