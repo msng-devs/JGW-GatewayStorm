@@ -68,9 +68,8 @@ const itemsPerPage = ref(10); // Or whatever number you prefer
 
 //서비스 편집
 const onEdit = (item) => {
-  emits('on-edit', item)
+  emits('on-edit', item.name, item.index, item.domain, item.id)
 };
-
 //Route로 이동
 const goRoute = (item) => {
   router.push({name: 'ApiRoute', params: {id: item.value}});

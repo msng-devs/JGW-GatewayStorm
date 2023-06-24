@@ -110,6 +110,7 @@ const isOpen = ref(false)
 const emits = defineEmits(['onUpdate', 'onDelete', 'onError'])
 
 const openDialog = (t_name, t_description, t_domain, t_id) => {
+  console.log(t_name, t_description, t_domain, t_id)
   isOpen.value = true
   name.value = t_name
   description.value = t_description

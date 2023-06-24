@@ -128,6 +128,7 @@ const openAddDialog = () => {
 
 const editDialog = ref(false);
 const editService = (name,description,domain,id) => {
+  console.log(name,description,domain,id)
   editDialog.value.openDialog(name,description,domain,id);
 }
 
