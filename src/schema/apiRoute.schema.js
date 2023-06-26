@@ -1,78 +1,23 @@
-const { Schema } = require('express-validator')
+const { Schema, check, param, body} = require('express-validator')
 
-const apiRouteAddRequest = {
-    serviceId: {
-        notEmpty: true,
-        in: ['params'],
-        isInt: {
-            errorMessage: 'service id가 없습니다.',
-        }
-    },
-    path: {
-        notEmpty: true,
-        in: ['body'],
-        isLength: {
-            errorMessage: 'path 는 1~45 자 이여야 합니다.',
-            options: { min: 1 ,max: 45}
-        }
-    },
-    method: {
-        notEmpty: true,
-        in: ['body'],
-        isInt: {
-            errorMessage: 'method 는 양수여야 합니다.',
-        }
-    },
-    role_id: {
-        notEmpty: false,
-        in: ['body'],
-        isInt: {
-            errorMessage: 'role id 는 양수여야 합니다.',
-        }
-    },
-    option_id:{
-        notEmpty: true,
-        in: ['body'],
-        isInt: {
-            errorMessage: 'option 는 양수여야 합니다.',
-        }
-    }
-}
 
-const apiRouteUpdateRequest = {
+const apiRouteAddSchema = [
 
-    path: {
-        notEmpty: true,
-        in: ['body'],
-        isLength: {
-            errorMessage: 'path 는 1~45 자 이여야 합니다.',
-            options: { min: 1 ,max: 45}
-        }
-    },
-    method: {
-        notEmpty: true,
-        in: ['body'],
-        isInt: {
-            errorMessage: 'method 는 양수여야 합니다.',
-        }
-    },
-    role_id: {
-        notEmpty: false,
-        in: ['body'],
-        isInt: {
-            errorMessage: 'method 는 양수여야 합니다.',
-        }
-    },
-    option:{
-        notEmpty: true,
-        in: ['body'],
-        isInt: {
-            errorMessage: 'option 는 양수여야 합니다.',
-        }
-    }
-}
+    body('path').exists().isLength({ min: 1, max: 45 }).withMessage('path 는 1~45 자 이여야 합니다.'),
+    body('method').exists().isInt().withMessage('method 는 양수여야 합니다.'),
+    body('role_id').optional({ checkFalsy: true }).isInt().withMessage('role id 는 양수여야 합니다.'),
+    body('option_id').exists().isInt().withMessage('option 는 양수여야 합니다.'),
+
+]
+
+const apiRouteUpdateSchema = [
+    body('path').exists().isLength({ min: 1, max: 45 }).withMessage('path 는 1~45 자 이여야 합니다.'),
+    body('method').exists().isInt().withMessage('method 는 양수여야 합니다.'),
+    body('role_id').optional({ checkFalsy: true }).isInt().withMessage('role id 는 양수여야 합니다.'),
+    body('option_id').exists().isInt().withMessage('option 는 양수여야 합니다.'),
+]
 
 module.exports = {
-    apiRouteAddRequest,
-    apiRouteUpdateRequest
+    apiRouteAddSchema,
+    apiRouteUpdateSchema,
 }

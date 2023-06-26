@@ -1,60 +1,19 @@
-const serviceAddRequest = {
-    name: {
-        notEmpty: true,
-        in: ['body'],
-        isLength: {
-            errorMessage: 'name 는 1~45 자 이여야 합니다.',
-            options: { min: 1 ,max: 45}
-        }
-    },
-    index: {
-        notEmpty: false,
-        in: ['body'],
-        isLength: {
-            errorMessage: 'index는 최대 256자 입니다.',
-            options: { max: 256}
-        }
-    },
+const {body} = require("express-validator");
 
-    domain: {
-        notEmpty: true,
-        in: ['body'],
-        isLength: {
-            errorMessage: 'domain 는 최대 200자 입니다.',
-            options: { min: 1 ,max: 200}
-        }
-    },
-}
+const serviceAddSchema = [
+    body('name').exists().isLength({ min: 1, max: 45 }).withMessage('name 는 1~45 자 이여야 합니다.'),
+    body('index').optional({ checkFalsy: true }).isLength({ max: 256 }).withMessage('index는 최대 256자 입니다.'),
+    body('domain').exists().isLength({ min: 1, max: 200 }).withMessage('domain 는 최대 200자 입니다.')
+]
 
-const serviceUpdateRequest = {
-    name: {
-        notEmpty: true,
-        in: ['body'],
-        isLength: {
-            errorMessage: 'name 는 1~45 자 이여야 합니다.',
-            options: { min: 1 ,max: 45}
-        }
-    },
-    index: {
-        notEmpty: false,
-        in: ['body'],
-        isLength: {
-            errorMessage: 'index는 최대 256자 입니다.',
-            options: { max: 256}
-        }
-    },
+const serviceUpdateSchema = [
+    body('name').exists().isLength({ min: 1, max: 45 }).withMessage('name 는 1~45 자 이여야 합니다.'),
+    body('index').optional({ checkFalsy: true }).isLength({ max: 256 }).withMessage('index는 최대 256자 입니다.'),
+    body('domain').exists().isLength({ min: 1, max: 200 }).withMessage('domain 는 최대 200자 입니다.')
+]
 
-    domain: {
-        notEmpty: true,
-        in: ['body'],
-        isLength: {
-            errorMessage: 'domain 는 최대 200자 입니다.',
-            options: { min: 1 ,max: 200}
-        }
-    },
-}
 
 module.exports = {
-    serviceAddRequest,
-    serviceUpdateRequest
+    serviceAddSchema,
+    serviceUpdateSchema
 }

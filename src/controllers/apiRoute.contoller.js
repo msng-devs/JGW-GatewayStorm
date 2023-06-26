@@ -5,47 +5,55 @@ const Role = require('../models/role.model');
 const RouteOption = require('../models/routeOption.model');
 
 const {ApplicationException, ApplicationErrorCode} = require("../utlis/exception/application.exception");
-const {createPage} = require("../utlis/pagenation");
 
 exports.getApiRoute = async (req, res, next) => {
-    const apiRoute = await ApiRoute.findByPk(req.params.id);
+    const apiRouteId = Number(req.params.id);
+    const apiRoute = await ApiRoute.findByPk(apiRouteId);
     if (!apiRoute) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "Api Route not found");
     res.json(apiRouteToJson(apiRoute));
 };
 
 exports.createApiRoute = async (req, res, next) => {
-    const foreignItems = await checkExistForeignTable(req.body.method, req.body.role_id, null, req.body.option_id)
-    await checkUnique(req.body.path, req.body.method, req.params.serviceId)
 
-    if(Number(req.body.option_id) === 4 && req.body.role_id === null) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "RBAC option에는 Role이 필수입니다.");
+    const path = req.body.path;
+    const methodId = Number(req.body.method);
+    const roleId = (req.body.role_id) ? Number(req.body.role_id) : null;
+    const serviceId = Number(req.params.serviceId);
+    const routeOptionId = Number(req.body.option_id);
+
+
+    if(routeOptionId === 4 && roleId === null) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "RBAC option에는 Role이 필수입니다.");
+
+    await checkExistForeignTable(methodId, roleId, serviceId, routeOptionId)
+    await checkUnique(path, methodId, serviceId)
+
+    if(path === "/api/v1/refresh/**" || path === "/api/v1/refresh") throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "refresh api는 생성할 수 없습니다.");
 
     const apiRoute = {
-        path: req.body.path,
-        method: req.body.method,
-        role: (req.body.option_id === 4) ? req.body.role_id : null,
-        service: req.params.serviceId,
-        routeOption: req.body.option_id
+        path: path,
+        method: methodId,
+        role: roleId,
+        service: serviceId,
+        routeOption: routeOptionId,
     };
-
     const newApiRoute = await ApiRoute.create(apiRoute);
-    console.log(newApiRoute)
-
     res.json(apiRouteToJson(newApiRoute));
-
 }
 
 exports.findApiRouteById = async (req, res, next) => {
 
-    const apiRoute = await ApiRoute.findByPk(req.params.id);
+    const apiRouteId = Number(req.params.id);
+
+    const apiRoute = await ApiRoute.findByPk(apiRouteId);
     if (!apiRoute) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "Api Route not found");
     res.json(apiRouteToJson(apiRoute));
 }
 
 exports.findApiRouteByServiceId = async (req, res, next) => {
-
+    const serviceId = Number(req.params.serviceId);
     const apiRoute = await ApiRoute.findAll({
         where: {
-            service: req.params.serviceId,
+            service: serviceId,
 
         }, order: [['path', 'ASC'], ['id', 'DESC']]
     });
@@ -55,32 +63,51 @@ exports.findApiRouteByServiceId = async (req, res, next) => {
 
 exports.updateApiRoute = async (req, res, next) => {
 
-    const apiRoute = await ApiRoute.findByPk(req.params.id);
-    console.log(apiRoute)
+    const apiRouteId = Number(req.params.id);
+    const serviceId = Number(req.params.serviceId);
+    const path = req.body.path;
+    const methodId = Number(req.body.method);
+    const roleId = (req.body.role_id) ? Number(req.body.role_id) : null;
+    const routeOptionId = Number(req.body.option_id);
+
+
+    if(path === "/api/v1/refresh/**" || path === "/api/v1/refresh") throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "refresh api는 생성할 수 없습니다.");
+
+    const apiRoute = await ApiRoute.findByPk(apiRouteId);
+
     if (!apiRoute) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "해당 라우트를 찾을 수 없습니다.");
-    const foreignItems = await checkExistForeignTable(req.body.method, req.body.role_id, null, req.body.option_id)
-    if(Number(req.body.option_id) === 4 && req.body.role_id === null) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "RBAC option에는 Role이 필수입니다.");
-    if(apiRoute.path !== req.body.path || apiRoute.method !== req.body.method) await checkUnique(req.body.path, req.body.method, apiRoute.service)
+
+    await checkExistForeignTable(methodId, roleId, serviceId, routeOptionId)
+
+    if(routeOptionId === 4 && roleId === null) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "RBAC option에는 Role이 필수입니다.");
+
+    if(!checkIsSame({path:path,method:methodId,routeOption:routeOptionId},apiRoute)) {
+        await checkUnique(req.body.path, req.body.method, apiRoute.service)
+    }
 
     await apiRoute.update({
-        path: req.body.path,
-        method: req.body.method,
-        role: (Number(req.body.option_id === 4)) ? req.body.role_id : null,
-        routeOption: req.body.option_id
+        path: path,
+        method: methodId,
+        role: roleId,
+        routeOption: routeOptionId
     });
+
     res.json(apiRouteToJson(apiRoute));
 }
 
 exports.deleteApiRoute = async (req, res, next) => {
+    const apiRouteId = Number(req.params.id);
 
-    const apiRoute = await ApiRoute.findByPk(req.params.id);
+    const apiRoute = await ApiRoute.findByPk(apiRouteId);
     if (!apiRoute) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "해당 라우트를 찾을 수 없습니다.");
     await apiRoute.destroy();
+
     res.status(204).end();
 
 }
 
 const checkUnique = async (path, method, service) => {
+
     const apiRoute = await ApiRoute.findOne({
         where: {
             path: path, method: method, service: service
@@ -99,18 +126,22 @@ const checkExistForeignTable = async (methodId, roleId, serviceId, routeOptionId
     if (methodId) {
         method = await Method.findByPk(methodId);
         if (!method) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "해당 Method를 찾을 수 없습니다.");
+        return;
     }
     if (roleId) {
         role = await Role.findByPk(roleId);
         if (!role) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "해당 Role을 찾을 수 없습니다.");
+        return;
     }
     if (serviceId) {
         service = await Service.findByPk(serviceId);
         if (!service) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "해당 Service를 찾을 수 없습니다.");
+        return;
     }
     if (routeOptionId) {
         routeOption = await RouteOption.findByPk(routeOptionId);
         if (!routeOption) throw new ApplicationException(ApplicationErrorCode.NOT_FOUND, "해당 RouteOption을 찾을 수 없습니다.");
+        return;
     }
     return {
         method: method, role: role, service: service, routeOption: routeOption
@@ -126,4 +157,8 @@ const apiRouteToJson = (apiRoute) => {
         service_id: Number(apiRoute.service),
         route_option_id: Number(apiRoute.routeOption),
     }
+}
+
+const checkIsSame = (newApiRoute, oldApiRoute) => {
+    return newApiRoute.path !== oldApiRoute.path || newApiRoute.method !== Number(oldApiRoute.method.id) || newApiRoute.routeOption !== Number(oldApiRoute.routeOption.id)
 }

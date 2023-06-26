@@ -3,7 +3,7 @@
   <v-app id="services">
     <LoadingSpinner :is-loading="isLoading"></LoadingSpinner>
     <v-container class="fill-height" fluid>
-        <NavBar></NavBar>
+        <NavBar @on-error="handleNavBarError" @is-loading="handleNavBarLoading"></NavBar>
         <v-main>
 
 
@@ -164,7 +164,13 @@ const updateService = (id, data) => {
     ];
   }
 }
+const handleNavBarError = (type,message) => {
+  alters.value.addAlert(type,message);
+}
 
+const handleNavBarLoading = (status) => {
+  isLoading.value = status;
+}
 </script>
 
 <style scoped>

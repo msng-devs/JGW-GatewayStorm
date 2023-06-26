@@ -3,7 +3,7 @@
   <v-app id="apiRoute">
     <LoadingSpinner :is-loading="isLoading"></LoadingSpinner>
     <v-container class="fill-height" fluid>
-      <NavBar></NavBar>
+      <NavBar @on-error="handleNavBarError" @is-loading="handleNavBarLoading"></NavBar>
       <v-main>
 
 
@@ -303,6 +303,14 @@ const updateRoute = (id, data) => {
       ...routes.value.slice(index + 1)
     ];
   }
+}
+
+const handleNavBarError = (type,message) => {
+  alters.value.addAlert(type,message);
+}
+
+const handleNavBarLoading = (status) => {
+  isLoading.value = status;
 }
 </script>
 

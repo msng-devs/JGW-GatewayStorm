@@ -81,8 +81,36 @@ const serviceToJson = (service) => {
     }
 }
 
-const checkDomain = (domain) => {
-    const urlRegex = /(http[s]?:\/\/)?([^\s(["<,>]*\.[^\s[",><]+|localhost)(:\d+)?(\/[^\s]*)?/g;
+function checkDomain(url) {
+    const regex = /^(http:\/\/|https:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(:\d+)?(\/.*)?$/;
 
-    if(!urlRegex.test(domain)) throw new ApplicationException(ApplicationErrorCode.REQUEST_ARGS_ERROR, "도메인 형식이 올바르지 않습니다.")
+    // Check if the URL matches the regular expression
+    if (!regex.test(url)) {
+        return false;
+    }
+
+    // Check if the URL starts with 'http://' or 'https://'
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        return false;
+    }
+
+    // Check if the URL is valid when 'http://' or 'https://' is removed
+    const withoutProtocol = url.replace(/^(http:\/\/|https:\/\/)/, '');
+    const parts = withoutProtocol.split(':');
+
+    if (parts.length === 2) {
+        // Check if the port is a valid number
+        const port = parseInt(parts[1]);
+        if (isNaN(port)) {
+            return false;
+        }
+    }
+
+    // Check if the domain is valid
+    const domain = parts[0];
+    if (!domain || !/^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/.test(domain)) {
+        return false;
+    }
+
+    return true;
 }
